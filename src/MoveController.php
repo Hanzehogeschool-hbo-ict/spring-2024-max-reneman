@@ -15,22 +15,26 @@ class MoveController
         if (!isset($game->board[$from])) {
             // cannot move tile from empty position
             $session->set('error', 'Board position is empty');
-        } elseif ($game->board[$from][count($game->board[$from])-1][0] != $game->player)
+        } elseif ($game->board[$from][count($game->board[$from])-1][0] != $game->player) {
             // can only move top of stack and only if owned by current player
             $session->set("error", "Tile is not owned by player");
-        elseif ($hand['Q'])
+        } elseif ($hand['Q']) {
             // cannot move unless queen bee has previously been played
             $session->set('error', "Queen bee is not played");
-        elseif ($from === $to) {
+        } elseif ($from === $to) {
             // a tile cannot return to its original position
             $session->set('error', 'Tile must move to a different position');
         } else {
             // temporarily remove tile from board
             $tile = array_pop($game->board[$from]);
-            if (!Util::has_NeighBour($to, $game->board))
+            if (empty($game->board[$from])) {
+                unset($game->board[$from]);
+            }
+
+            if (!Util::has_NeighBour($to, $game->board)) {
                 // target position is not connected to hive so move is invalid
                 $session->set("error", "Move would split hive");
-            elseif (Util::hasMultipleHives($game->board)) {
+            } elseif (Util::hasMultipleHives($game->board)) {
                 // the move would split the hive in two so it is invalid
                 $session->set("error", "Move would split hive");
             } elseif (isset($game->board[$to]) && $tile[1] != "B") {
@@ -57,9 +61,9 @@ class MoveController
                 $state = $db->Escape($game);
                 $last = $session->get('last_move') ?? 'null';
                 $db->Execute("
-                    insert into moves (game_id, type, move_from, move_to, previous_id, state)
-                    values ({$session->get('game_id')}, \"move\", \"$from\", \"$to\", $last, \"$state\")
-                ");
+                insert into moves (game_id, type, move_from, move_to, previous_id, state)
+                values ({$session->get('game_id')}, \"move\", \"$from\", \"$to\", $last, \"$state\")
+            ");
                 $session->set('last_move', $db->Get_Insert_Id());
             }
         }
