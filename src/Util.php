@@ -86,7 +86,8 @@ class Util {
 
         // if none of these four stacks contain tiles, the tile would be disconnected from
         // the hive during the move and the slide would therefore be invalid
-        if (!$a && !$b && !$from && !$to) return false;
+        // but if at least one of them contains tiles, the move should be valid
+//        if (!$a || !$b || !$from || !$to) return false;
 
         // the rules are unclear on when exactly a slide is valid, especially when considering stacked tiles
         // the following equation attempts to clarify which slides are valid
