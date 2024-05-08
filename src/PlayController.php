@@ -43,8 +43,8 @@ class PlayController
             ");
             $session->set('last_move', $db->Get_Insert_Id());
         }
-
         // redirect back to index
         App::redirect();
     }
+
 }
