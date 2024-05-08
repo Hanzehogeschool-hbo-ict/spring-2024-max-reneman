@@ -7,6 +7,9 @@
 <body>
 <div class="board">
     <?php
+
+    use Hive\Util;
+
     $width = 35;
     $height = 30;
 
@@ -107,28 +110,46 @@
         <?php
         // render list of tile types
         foreach ($game->hand[$game->player] as $tile => $ct) {
-            echo "<option value=\"$tile\">$tile</option>";
+             if($ct !==0)
+                echo "<option value=\"$tile\">$tile</option>";
         }
         ?>
     </select>
+
+
     <select name="to">
         <?php
         // render list of possible moves
         foreach ($to as $pos) {
-            echo "<option value=\"$pos\">$pos</option>";
+            if(!(isset($game->board[$pos]))){
+                if(!(count($game->board) && !Util::has_NeighBour($pos, $game->board))) {
+                    if (!(array_sum($game->hand[$game->player]) < 11 && !Util::neighboursAreSameColor($game->player, $pos, $game->board)))
+                    echo "<option value=\"$pos\">$pos</option>";
+                }
+            }
         }
         ?>
     </select>
     <input type="submit" value="Play">
 </form>
 <form method="post" action="/move">
+
+
+
+
+
+
     <select name="from">
         <?php
         // render list of positions in board
         foreach (array_keys($game->board) as $pos) {
-            echo "<option value=\"$pos\">$pos</option>";
+            if ((!$game->board[$pos][count($game->board[$pos])-1][0] != $game->player)) {
+                echo "<option value=\"$pos\">$pos</option>";
+            }
         }
         ?>
+
+
     </select>
     <select name="to">
         <?php
@@ -138,6 +159,16 @@
         }
         ?>
     </select>
+
+
+
+
+
+
+
+
+
+
     <input type="submit" value="Move">
 </form>
 <form method="post" action="/pass">
