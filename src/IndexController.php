@@ -31,4 +31,13 @@ class IndexController
         // render view
         require_once TEMPLATE_DIR.'/index.html.php';
     }
+
+    public function getPieces($game){
+        $return = [];
+        foreach ($game->hand[$game->player] as $tile => $ct) {
+            if($ct !==0)
+                $return[] = "<option value=\"$tile\">$tile</option>";
+        }
+        return $return;
+    }
 }

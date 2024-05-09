@@ -9,6 +9,7 @@
     <?php
 
     use Hive\Util;
+    use Hive\IndexController;
 
     $width = 35;
     $height = 30;
@@ -109,9 +110,9 @@
     <select name="piece">
         <?php
         // render list of tile types
-        foreach ($game->hand[$game->player] as $tile => $ct) {
-             if($ct !==0)
-                echo "<option value=\"$tile\">$tile</option>";
+        $pieces = \Hive\IndexController::getPieces($game);
+        foreach ($pieces as $piece){
+            echo $piece;
         }
         ?>
     </select>

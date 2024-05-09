@@ -32,6 +32,7 @@ class Game {
 
     // store the current state as a string
     public function __toString(): string {
+
         return json_encode([$this->board, $this->hand, $this->player]);
     }
 

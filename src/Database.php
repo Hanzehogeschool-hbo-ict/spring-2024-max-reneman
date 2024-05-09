@@ -22,8 +22,8 @@ class Database
 
     // execute query with result
     public function Query(string $string): \mysqli_result {
-        $result = $this->db->query($string);
-        if ($result === false) {
+        $result = $this->db->query($string);        if ($result === false) {
+
             throw new \RuntimeException($this->db->error);
         }
         return $result;

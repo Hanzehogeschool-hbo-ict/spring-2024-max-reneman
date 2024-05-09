@@ -27,3 +27,4 @@ class PassController {
         App::redirect();
     }
 }
+
