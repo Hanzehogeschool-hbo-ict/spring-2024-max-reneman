@@ -34,7 +34,7 @@ class PlayController
             $game->board[$to] = [[$game->player, $piece]];
             $game->hand[$game->player][$piece]--;
             $game->player = 1 - $game->player;
-
+            echo "<script> console.log('" . $game->__toString() . "'); </script>";
             // store move in database
             $db = Database::inst();
             $state = $db->Escape($game);
@@ -47,7 +47,7 @@ class PlayController
         }
         // redirect back to index
 
-        App::redirect();
+        //App::redirect();
     }
 
 }
