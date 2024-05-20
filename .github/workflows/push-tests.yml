@@ -1,0 +1,25 @@
+name: PHP Composer and PHPUnit Tests
+
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+uses: actions/checkout@v2
+
+    
+name: Validate composer.json and composer.lock
+    run: composer validate
+
+    
+name: Install dependencies
+    run: composer install --prefer-dist --no-progress --no-suggest
+
+    
+name: Run tests with PHPUnit
+    run: ./vendor/bin/phpunit --coverage-text
