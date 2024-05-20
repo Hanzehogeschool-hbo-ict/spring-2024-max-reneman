@@ -14,6 +14,7 @@ class IndexControllerTest extends TestCase
      */
     public function testGetPieces()
     {
+        $this->assertTrue(false);
         //arrange
         $game = $this->createMock(Game::class);
         $game->hand = [
