@@ -27,8 +27,10 @@ jobs:
       id: phpunit
       run: ./vendor/bin/phpunit --log-junit=phpunit.xml
 
-    - name: Display PHPUnit tests results
-      uses: EnricoCi/github-action-phpunit@main
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
       with:
-        file: phpunit.xml
+        name: PHPunit Tests
+        path: phpunit.xml
+        reporter: java-junit
       if: always()
