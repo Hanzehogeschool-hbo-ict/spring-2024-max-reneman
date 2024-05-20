@@ -25,7 +25,7 @@ jobs:
 
     - name: Run tests with phpunit
       id: phpunit
-      run: ./vendor/bin/phpunit --log-junit=phpunit.xml
+      run: ./vendor/bin/phpunit --log-junit=phpunit.xml ./tests 
 
     - name: Publish Test Report
       uses: dorny/test-reporter@v1
