@@ -3,23 +3,24 @@ name: PHP Composer and PHPUnit Tests
 on:
   push:
     branches: [ master ]
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    
-uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    
-name: Validate composer.json and composer.lock
-    run: composer validate
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'   # Update with your PHP version
 
-    
-name: Install dependencies
-    run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Validate composer.json and composer.lock
+      run: composer validate --no-check-all --strict
+      
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
 
-    
-name: Run tests with PHPUnit
-    run: ./vendor/bin/phpunit --coverage-text
+    - name: Run tests with phpunit
+      run: ./vendor/bin/phpunit
