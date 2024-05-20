@@ -10,11 +10,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - run: echo "$(cat hello_world.txt)"
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'   # Update with your PHP version
+        php-version: '8.3'
 
     - name: Validate composer.json and composer.lock
       run: composer validate --no-check-all --strict
