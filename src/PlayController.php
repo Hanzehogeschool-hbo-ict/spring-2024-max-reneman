@@ -12,8 +12,6 @@ class PlayController
         $game = $session->get('game');
         $hand = $game->hand[$game->player];
 
-
-
         if (!$hand[$piece]) {
             // must still have tile in hand to be able to play it
             $session->set('error', "Player does not have tile");

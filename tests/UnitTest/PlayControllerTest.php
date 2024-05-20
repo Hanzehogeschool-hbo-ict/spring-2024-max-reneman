@@ -1,25 +1,35 @@
 <?php
 
-namespace UnitTest;
-
-
+namespace Hive\Tests;
 
 use Hive\PlayController;
+use Hive\Session;
+use Hive\Game;
+use PHPUnit\Framework\TestCase;
 
-class PlayControllerTest
+class PlayControllerTest extends TestCase
 {
-    public function TestPlayQueenOnFourthMove()
+    public function testHandlePost()
     {
-        //arrange
-        $gamestate = [["0,0" => [[0, "B"]],"0,1" => [[1, "B"]],"0,-1" => [[0, "B"]],"0,2" => [[1, "B"]],"0,3" => [[1, "Q"]],"0,-2" => [[0, "S"]]], [["Q" => 1, "B" => 0, "S" => 1, "A" => 3, "G" => 3],["Q" => 0, "B" => 0, "S" => 2, "A" => 3, "G" => 3]], 1];
+        // Arrange
+        $session = Session::inst();
+        $game = new Game();
+        $game->player = 0; // White player
+        $game->hand[$game->player] = ['Q' => 1, 'B' => 3]; // Hand with 1 queen bee and 3 other pieces
+        $session->set('game', $game);
 
-        //act
-        $output = PlayController::handlepost("Q", "0,-3");
-        $assertinput = [["0,0" => [[0, "B"]],"0,1" => [[1, "B"]],"0,-1" => [[0, "B"]],"0,2" => [[1, "B"]],"0,-2" => [[0, "S"]],"0,3" => [[1, "S"]],"0,-3" => [[0, "Q"]]], [["Q" => 0, "B" => 0, "S" => 1, "A" => 3, "G" => 3],["Q" => 1, "B" => 0, "S" => 1, "A" => 3, "G" => 3]], 1];
+        $playController = new PlayController();
 
-        //assert
+        // Act
+        // White player places three non-queen pieces
+        $playController->handlePost('B', '0,0');
+        $playController->handlePost('B', '0,1');
+        $playController->handlePost('B', '0,2');
 
-        $this->assertSame($output, $assertinput);
+        // White player tries to place a fourth non-queen piece
+        $playController->handlePost('B', '0,3');
 
+        // Assert
+        $this->assertEquals('Must play queen bee', $session->get('error'));
     }
 }
