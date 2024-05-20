@@ -1,4 +1,7 @@
 {
+  "name": "vendor/my-package",
+  "description": "This is my fabulous package",
+  "license": "MIT",
   "require": {
     "php": ">=8.3",
     "ext-mysqli": "*",
