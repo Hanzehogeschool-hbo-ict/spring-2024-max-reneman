@@ -26,7 +26,6 @@ class Game {
         0 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3],
         1 => ["Q" => 1, "B" => 2, "S" => 2, "A" => 3, "G" => 3]
     ];
-
     // current player; 0 for white, 1 for black
     public int $player = 0;
 
