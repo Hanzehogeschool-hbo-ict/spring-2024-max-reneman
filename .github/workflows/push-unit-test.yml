@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -14,13 +15,22 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'
-
+        php-version: '8.3'  # Update with your PHP version
+        
     - name: Validate composer.json and composer.lock
       run: composer validate --no-check-all --strict
-      
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Run tests with phpunit
-      run: ./vendor/bin/phpunit
+      id: phpunit
+      run: ./vendor/bin/phpunit --log-junit=phpunit.xml ./tests 
+
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
+      with:
+        name: PHPunit Tests
+        path: phpunit.xml
+        reporter: java-junit
+      if: always()
