@@ -9,12 +9,15 @@ class MoveCommand implements CommandInterface
     private $session;
     private $game;
 
-    public function __construct($from, $to, $session, $game)
+    private $db;
+
+    public function __construct($from, $to, $session, $game, Database $db)
     {
         $this->from = $from;
         $this->to = $to;
         $this->session = $session;
         $this->game = $game;
+        $this->db = $db;
     }
 
     public function execute()
@@ -52,14 +55,13 @@ class MoveCommand implements CommandInterface
                 if (isset($this->game->board[$this->to])) array_push($this->game->board[$this->to], $tile);
                 else $this->game->board[$this->to] = [$tile];
                 $this->game->player = 1 - $this->game->player;
-                $db = Database::inst();
-                $state = $db->Escape($this->game);
+                $state = $this->db->Escape($this->game);
                 $last = $this->session->get('last_move') ?? 'null';
-                $db->Execute("
+                $this->db->Execute("
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
                 values ({$this->session->get('game_id')}, \"move\", \"{$this->from}\", \"{$this->to}\", $last, \"$state\")
             ");
-                $this->session->set('last_move', $db->Get_Insert_Id());
+                $this->session->set('last_move', $this->db->Get_Insert_Id());
 
             }
         }

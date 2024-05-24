@@ -8,13 +8,15 @@ class PlayCommand implements CommandInterface
     private $to;
     private $session;
     private $game;
+    private $db;
 
-    public function __construct($piece, $to, $session, $game)
+    public function __construct($piece, $to, $session, $game, Database $db)
     {
         $this->piece = $piece;
         $this->to = $to;
         $this->session = $session;
         $this->game = $game;
+        $this->db = $db;
     }
 
     public function execute()
@@ -36,14 +38,14 @@ class PlayCommand implements CommandInterface
             $this->game->hand[$this->game->player][$this->piece]--;
             $this->game->player = 1 - $this->game->player;
             echo "<script> console.log('" . $this->game->__toString() . "'); </script>";
-            $db = Database::inst();
-            $state = $db->Escape($this->game);
+
+            $state = $this->db->Escape($this->game);
             $last = $this->session->get('last_move') ?? 'null';
-            $db->Execute("
+            $this->db->Execute("
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
                 values ({$this->session->get('game_id')}, \"play\", \"{$this->piece}\", \"{$this->to}\", $last, \"$state\")
             ");
-            $this->session->set('last_move', $db->Get_Insert_Id());
+            $this->session->set('last_move', $this->db->Get_Insert_Id());
         }
         App::redirect();
     }
