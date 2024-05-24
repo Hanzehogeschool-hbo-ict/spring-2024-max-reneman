@@ -110,7 +110,7 @@
     <select name="piece">
         <?php
         // render list of tile types
-        $pieces = \Hive\IndexController::getPieces($game);
+        $pieces = IndexController::getPieces($game);
         foreach ($pieces as $piece){
             echo $piece;
         }

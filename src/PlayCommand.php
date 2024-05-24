@@ -43,7 +43,7 @@ class PlayCommand implements CommandInterface
             $last = $this->session->get('last_move') ?? 'null';
             $this->db->Execute("
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
-                values ({$this->session->get('game_id')}, \"play\", \"{$this->piece}\", \"{$this->to}\", $last, \"$state\")
+                values ({$this->session->get('game_id')}, \"play\", \"$this->piece\", \"$this->to\", $last, \"$state\")
             ");
             $this->session->set('last_move', $this->db->Get_Insert_Id());
         }
