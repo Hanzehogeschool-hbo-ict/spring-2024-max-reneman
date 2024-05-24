@@ -22,6 +22,7 @@ php:
   version: 8.3 #(Applied in CI/CD pipeline)
 include:
   - name: PhpMethodNamingConventionInspection
+  - name: PhpVulnerablePathsInspection
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
