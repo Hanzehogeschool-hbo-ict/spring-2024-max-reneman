@@ -19,7 +19,7 @@ class Util {
         if ($a[1] == $b[1] && abs($a[0] - $b[0]) == 1) return true;
         // two tiles are also neighbours if BOTH coordinates differ by one and both DIFFERENCES sum to zero
         // e.g., 0,0 and -1,1 are neigbours
-        if ($a[0] + $a[1] == $b[0] + $b[1]) return true;
+        if ($a[0].$a[1] == $b[0].$b[1]) return true;
         return false;
     }
 
@@ -50,8 +50,8 @@ class Util {
             $next = explode(',', array_shift($queue));
             foreach (Util::OFFSETS as $qr) {
                 list($q, $r) = $qr;
-                $q += $next[0];
-                $r += $next[1];
+                $q .= $next[0];
+                $r .= $next[1];
                 if (in_array("$q,$r", $all)) {
                     $queue[] = "$q,$r";
                     $all = array_diff($all, ["$q,$r"]);
@@ -73,8 +73,8 @@ class Util {
         $b = explode(',', $to);
         $common = [];
         foreach (self::OFFSETS as $qr) {
-            $q = $b[0] + $qr[0];
-            $r = $b[1] + $qr[1];
+            $q = $b[0].$qr[0];
+            $r = $b[1].$qr[1];
             if (self::isNeighbour($from, $q.",".$r)) $common[] = $q.",".$r;
         }
 
