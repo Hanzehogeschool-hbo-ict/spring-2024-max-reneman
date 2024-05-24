@@ -69,6 +69,6 @@ class MoveController
         }
 
         // redirect back to index
-        //App::redirect();
+        App::redirect();
     }
 }
