@@ -10,8 +10,8 @@ class MoveController
         $session = Session::inst();
         $game = $session->get('game');
 
-        $playCommand = new PlayCommand($from, $to, $session, $game);
-        $playCommand->execute();
+        $moveCommand = new MoveCommand($from, $to, $session, $game);
+        $moveCommand->execute();
     }
 
 //    public function handlePost(string $from, string $to)
