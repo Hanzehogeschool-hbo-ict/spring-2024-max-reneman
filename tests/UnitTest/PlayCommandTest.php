@@ -2,22 +2,23 @@
 
 namespace Hive\Tests;
 
-use Hive\PlayController;
+use Hive\PlayCommand;
 use Hive\Session;
 use Hive\Game;
+use Hive\Database;
 use PHPUnit\Framework\TestCase;
 
-class PlayControllerTest extends TestCase
+class PlayCommandTest extends TestCase
 {
     private Session $session;
-    private PlayController $playController;
+    private Database $db;
 
     protected function setUp(): void {
         $this->session = new Session();
-        $this->playController = new PlayController($this->session);
+        $this->db = $this->createMock(Database::class);
     }
 
-    public function testHandlePost()
+    public function testExecute()
     {
         // Arrange
         $game = new Game();
@@ -27,12 +28,16 @@ class PlayControllerTest extends TestCase
 
         // Act
         // White player places three non-queen pieces
-        $this->playController->handlePost('B', '0,0');
-        $this->playController->handlePost('B', '0,1');
-        $this->playController->handlePost('B', '0,2');
+        $playCommand = new PlayCommand('B', '0,0', $this->session, $game, $this->db);
+        $playCommand->execute();
+        $playCommand = new PlayCommand('B', '0,1', $this->session, $game, $this->db);
+        $playCommand->execute();
+        $playCommand = new PlayCommand('B', '0,2', $this->session, $game, $this->db);
+        $playCommand->execute();
 
         // White player tries to place a fourth non-queen piece
-        $this->playController->handlePost('B', '0,3');
+        $playCommand = new PlayCommand('B', '0,3', $this->session, $game, $this->db);
+        $playCommand->execute();
 
         // Assert
         $this->assertEquals('Must play queen bee', $this->session->get('error'));
