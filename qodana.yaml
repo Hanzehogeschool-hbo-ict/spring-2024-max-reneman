@@ -7,7 +7,7 @@ version: "1.0"
 #Specify inspection profile for code analysis
 profile:
   name: qodana.recommended
-failThreshold: 51
+failThreshold: 49
 #Enable inspections
 #include:
 #  - name: <SomeEnabledInspectionId>
