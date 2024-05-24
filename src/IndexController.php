@@ -7,11 +7,21 @@ namespace Hive;
  */
 class IndexController
 {
+    private Session $session;
+
+    public function __construct() {
+        $this->session = new Session();
+    }
+
+
+
+
+
     public function handleGet() {
-        $session = Session::inst();
+        $session = $this->session->get('game');
 
         // ensure session contains a game
-        $game = $session->get('game');
+        $game = $this->session->get('game');
         if (!$game) {
             App::redirect('/restart');
             return;
