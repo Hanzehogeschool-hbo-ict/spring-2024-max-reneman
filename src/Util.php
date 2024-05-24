@@ -69,7 +69,7 @@ class Util {
         if (!self::isNeighbour($from, $to)) return false;
 
         // find the two common neighbours of the origin and target tiles
-        // there are always two, because the two tiles are neighbour
+        // there are always two, because the two tiles are neighbours
         $b = explode(',', $to);
         $common = [];
         foreach (self::OFFSETS as $qr) {
