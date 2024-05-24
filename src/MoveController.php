@@ -18,7 +18,7 @@ class MoveController
 
         $game = $this->session->get('game');
 
-        $moveCommand = new MoveCommand($from, $to, $this->session, $game);
+        $moveCommand = new MoveCommand($from, $to, $this->session, $game, $this->db);
         $moveCommand->execute();
     }
 }

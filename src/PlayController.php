@@ -19,7 +19,7 @@ class PlayController
 
         $game = $this->session->get('game');
 
-        $playCommand = new PlayCommand($piece, $to, $this->session, $game);
+        $playCommand = new PlayCommand($piece, $to, $this->session, $game, $this->db);
         $playCommand->execute();
     }
 
