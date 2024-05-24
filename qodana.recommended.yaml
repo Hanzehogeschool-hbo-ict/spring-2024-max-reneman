@@ -6,3 +6,4 @@ include:
 inspections:
   - group: JSInspections
     enabled: false
+    failThreshold: 13
