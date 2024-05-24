@@ -11,7 +11,7 @@ class UndoController
 
         // restore last move from database
         $last_move = $session->get('last_move') ?? 0;
-        $result = $db->Query("SELECT previous_id, state FROM moves WHERE id = {$last_move}")->fetch_array();
+        $result = $db->Query("SELECT previous_id, state FROM moves WHERE id = $last_move")->fetch_array();
         $session->set('last_move', $result[0]);
         $session->set('game', Game::fromString($result[1]));
 

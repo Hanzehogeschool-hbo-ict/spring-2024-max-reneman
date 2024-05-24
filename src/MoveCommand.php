@@ -49,17 +49,17 @@ class MoveCommand implements CommandInterface
                     $this->session->set("error", 'Tile must slide');
             }
             if ($this->session->get('error')) {
-                if (isset($this->game->board[$this->from])) array_push($this->game->board[$this->from], $tile);
+                if (isset($this->game->board[$this->from])) $this->game->board[$this->from][] = $tile;
                 else $this->game->board[$this->from] = [$tile];
             } else {
-                if (isset($this->game->board[$this->to])) array_push($this->game->board[$this->to], $tile);
+                if (isset($this->game->board[$this->to])) $this->game->board[$this->to][] = $tile;
                 else $this->game->board[$this->to] = [$tile];
                 $this->game->player = 1 - $this->game->player;
                 $state = $this->db->Escape($this->game);
                 $last = $this->session->get('last_move') ?? 'null';
                 $this->db->Execute("
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
-                values ({$this->session->get('game_id')}, \"move\", \"{$this->from}\", \"{$this->to}\", $last, \"$state\")
+                values ({$this->session->get('game_id')}, \"move\", \"$this->from\", \"$this->to\", $last, \"$state\")
             ");
                 $this->session->set('last_move', $this->db->Get_Insert_Id());
 

@@ -28,6 +28,7 @@ class Util {
         foreach (array_keys($board) as $b) {
             if (self::isNeighbour($a, $b)) return true;
         }
+        return false;
     }
 
     // check if all neighbours of a position belong to the same player
