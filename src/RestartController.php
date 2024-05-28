@@ -12,13 +12,14 @@ class RestartController {
         $this->db = new Database();
     }
 
-    public function handleGet() {
+    public function handleGet(): void
+    {
         // Create a new game
         $this->session->set('game', new Game());
 
         // Get new game id from database
         $this->db->Execute('INSERT INTO games VALUES ()');
-        $this->session->set('game_id', $this->db->Get_Insert_Id());
+        $this->session->set('game_id', $this->db->GetInsertId());
 
         // Redirect back to index
         App::redirect();

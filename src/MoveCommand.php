@@ -4,12 +4,11 @@ namespace Hive;
 
 class MoveCommand implements CommandInterface
 {
-    private $from;
-    private $to;
-    private $session;
-    private $game;
-
-    private $db;
+private string $from;
+private string $to;
+private Session $session;
+private Game $game;
+private Database $db;
 
     public function __construct($from, $to, $session, $game, Database $db)
     {
@@ -20,7 +19,7 @@ class MoveCommand implements CommandInterface
         $this->db = $db;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $hand = $this->game->hand[$this->game->player];
 
@@ -38,7 +37,7 @@ class MoveCommand implements CommandInterface
                 unset($this->game->board[$this->from]);
             }
 
-            if (!Util::has_NeighBour($this->to, $this->game->board)) {
+            if (!Util::hasNeighBour($this->to, $this->game->board)) {
                 $this->session->set("error", "Move would split hive");
             } elseif (Util::hasMultipleHives($this->game->board)) {
                 $this->session->set("error", "Move would split hive");
@@ -61,7 +60,7 @@ class MoveCommand implements CommandInterface
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
                 values ({$this->session->get('game_id')}, \"move\", \"$this->from\", \"$this->to\", $last, \"$state\")
             ");
-                $this->session->set('last_move', $this->db->Get_Insert_Id());
+                $this->session->set('last_move', $this->db->GetInsertId());
 
             }
         }

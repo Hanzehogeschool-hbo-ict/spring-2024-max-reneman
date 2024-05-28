@@ -14,7 +14,7 @@ class PlayController
         $this->db = new Database();
     }
 
-    public function handlePost(string $piece, string $to)
+    public function handlePost(string $piece, string $to): void
     {
 
         $game = $this->session->get('game');

@@ -9,5 +9,3 @@ $dotenv->load(__DIR__.'/../.env');
 
 $app = new Hive\App();
 $app->handle();
-
-?>

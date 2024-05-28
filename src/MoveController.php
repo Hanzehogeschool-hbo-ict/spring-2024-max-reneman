@@ -13,7 +13,7 @@ class MoveController
         $this->db = new Database();
     }
 
-    public function handlePost(string $from, string $to)
+    public function handlePost(string $from, string $to): void
     {
 
         $game = $this->session->get('game');

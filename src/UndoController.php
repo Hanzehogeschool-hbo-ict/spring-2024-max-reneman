@@ -5,7 +5,8 @@ namespace Hive;
 // undo last move
 class UndoController
 {
-    public function handlePost() {
+    public function handlePost(): void
+    {
         $session = Session::inst();
         $db = Database::inst();
 

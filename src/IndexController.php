@@ -17,7 +17,8 @@ class IndexController
 
 
 
-    public function handleGet() {
+    public function handleGet(): void
+    {
         $session = $this->session->get('game');
 
         // ensure session contains a game
@@ -42,7 +43,8 @@ class IndexController
         require_once TEMPLATE_DIR.'/index.html.php';
     }
 
-    public function getPieces($game){
+    public function getPieces($game): array
+    {
         $return = [];
         foreach ($game->hand[$game->player] as $tile => $ct) {
             if($ct !==0)

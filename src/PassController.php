@@ -11,7 +11,8 @@ class PassController {
         $this->db = new Database();
     }
 
-    public function handlePost() {
+    public function handlePost(): void
+    {
         // get state from session
         $game = $this->session->get('game');
 
@@ -26,7 +27,7 @@ class PassController {
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
                 values ({$this->session->get('game_id')}, \"pass\", null, null, $last, \"$state\")
             ");
-        $this->session->set('last_move', $this->db->Get_Insert_Id());
+        $this->session->set('last_move', $this->db->GetInsertId());
 
         // redirect back to index
         App::redirect();
