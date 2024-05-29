@@ -16,7 +16,7 @@ class MoveController
     public function handlePost(string $from, string $to): void
     {
 
-        $game = $this->session->get('game');
+        $game = $this->session->getFromSession('game');
 
         $moveCommand = new MoveCommand($from, $to, $this->session, $game, $this->db);
         $moveCommand->execute();

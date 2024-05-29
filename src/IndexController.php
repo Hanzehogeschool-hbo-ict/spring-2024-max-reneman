@@ -19,10 +19,10 @@ class IndexController
 
     public function handleGet(): void
     {
-        $session = $this->session->get('game');
+        $session = $this->session->getFromSession('game');
 
         // ensure session contains a game
-        $game = $this->session->get('game');
+        $game = $this->session->getFromSession('game');
         if (!$game) {
             App::redirect('/restart');
             return;

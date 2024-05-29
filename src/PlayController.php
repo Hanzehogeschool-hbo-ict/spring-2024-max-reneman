@@ -17,7 +17,7 @@ class PlayController
     public function handlePost(string $piece, string $to): void
     {
 
-        $game = $this->session->get('game');
+        $game = $this->session->getFromSession('game');
 
         $playCommand = new PlayCommand($piece, $to, $this->session, $game, $this->db);
         $playCommand->execute();

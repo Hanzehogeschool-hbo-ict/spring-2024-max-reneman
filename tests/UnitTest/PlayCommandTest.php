@@ -24,7 +24,7 @@ class PlayCommandTest extends TestCase
         $game = new Game();
         $game->player = 0; // White player
         $game->hand[$game->player] = ['Q' => 1, 'B' => 3]; // Hand with 1 queen bee and 3 other pieces
-        $this->session->set('game', $game);
+        $this->session->setOnSession('game', $game);
 
         // Act
         // White player places three non-queen pieces
@@ -40,6 +40,6 @@ class PlayCommandTest extends TestCase
         $playCommand->execute();
 
         // Assert
-        $this->assertEquals('Must play queen bee', $this->session->get('error'));
+        $this->assertEquals('Must play queen bee', $this->session->getFromSession('error'));
     }
 }

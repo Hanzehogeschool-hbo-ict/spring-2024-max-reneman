@@ -12,16 +12,16 @@ class UndoController
     }
     public function handlePost(): void
     {
-        if (!$this->session->get('game')->hasAnyPlayerPlayedTile()) {
+        if (!$this->session->getFromSession('game')->hasAnyPlayerPlayedTile()) {
             App::redirect();
             return;
         }
 
         // restore last move from database
-        $last_move = $this->session->get('last_move') ?? 0;
+        $last_move = $this->session->getFromSession('last_move') ?? 0;
         $result = $this->db->query("SELECT previous_id, state FROM moves WHERE id = $last_move")->fetch_array();
-        $this->session->set('last_move', $result[0]);
-        $this->session->set('game', Game::fromString($result[1]));
+        $this->session->setOnSession('last_move', $result[0]);
+        $this->session->setOnSession('game', Game::fromString($result[1]));
 
         // redirect back to index
         App::redirect();

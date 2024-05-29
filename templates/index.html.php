@@ -22,7 +22,7 @@ $height = 30;
 // find minimum values for q and r to render board
 $min_q = 1000;
 $min_r = 1000;
-foreach ($session->get('game')->board as $pos => $tile) {
+foreach ($session->getFromSession('game')->board as $pos => $tile) {
     $qr = explode(',', $pos);
     if ($qr[0] < $min_q) $min_q = $qr[0];
     if ($qr[1] < $min_r) $min_r = $qr[1];
@@ -55,14 +55,14 @@ $rendered_tiles = [];
     return $str;
 }
 // render tiles in play
-foreach (array_filter($session->get('game')->board) as $pos => $tile) {
+foreach (array_filter($session->getFromSession('game')->board) as $pos => $tile) {
     $qr = explode(',', $pos);
     $rendered_tiles[$pos] = generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height);
 }
 
 // render empty tiles adjacent to existing tiles
 foreach ($to as $pos) {
-    if (!array_key_exists($pos, $session->get('game')->board)) {
+    if (!array_key_exists($pos, $session->getFromSession('game')->board)) {
         $qr = explode(',', $pos);
         $tile = [["&nbsp;"]];
         $rendered_tiles[$pos] = generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height);
@@ -89,7 +89,7 @@ foreach ($rendered_tiles as $str) {
     White:
     <?php
     // render tiles in white's hand
-    foreach ($session->get('game')->hand[0] as $tile => $ct) {
+    foreach ($session->getFromSession('game')->hand[0] as $tile => $ct) {
         for ($i = 0; $i < $ct; $i++) {
             echo '<div class="tile player0"><span>'.$tile."</span></div>";
         }
@@ -100,7 +100,7 @@ foreach ($rendered_tiles as $str) {
     Black:
     <?php
     // render tiles in black's hand
-    foreach ($session->get('game')->hand[1] as $tile => $ct) {
+    foreach ($session->getFromSession('game')->hand[1] as $tile => $ct) {
         for ($i = 0; $i < $ct; $i++) {
             echo '<div class="tile player1"><span>'.$tile."</span></div>";
         }
@@ -110,14 +110,14 @@ foreach ($rendered_tiles as $str) {
 <div class="turn">
     Turn: <?php
         // render active player
-        if ($session->get('game')->player == 0) echo "White"; else echo "Black";
+        if ($session->getFromSession('game')->player == 0) echo "White"; else echo "Black";
     ?>
 </div>
 <form method="post" action="/play">
     <select name="piece">
         <?php
         // render list of tile types
-        $pieces = (new Hive\IndexController)->getPieces($session->get('game'));
+        $pieces = (new Hive\IndexController)->getPieces($session->getFromSession('game'));
         foreach ($pieces as $piece){
             echo $piece;
         }
@@ -130,8 +130,8 @@ foreach ($rendered_tiles as $str) {
         // render list of possible moves
         foreach ($to as $pos) {
             if(!(isset($game->board[$pos]))){
-                if(!(count($session->get('game')->board) && !Util::hasNeighBour($pos, $session->get('game')->board))) {
-                    if (!(array_sum($session->get('game')->hand[$session->get('game')->player]) < 11 && !Util::neighboursAreSameColor($session->get('game')->player, $pos, $session->get('game')->board)))
+                if(!(count($session->getFromSession('game')->board) && !Util::hasNeighBour($pos, $session->getFromSession('game')->board))) {
+                    if (!(array_sum($session->getFromSession('game')->hand[$session->getFromSession('game')->player]) < 11 && !Util::neighboursAreSameColor($session->getFromSession('game')->player, $pos, $session->getFromSession('game')->board)))
                     echo "<option value=\"$pos\">$pos</option>";
                 }
             }
@@ -145,8 +145,8 @@ foreach ($rendered_tiles as $str) {
     <select name="from">
         <?php
         // render list of positions in board
-        foreach (array_keys($session->get('game')->board) as $pos) {
-            if ((!$session->get('game')->board[$pos][count($session->get('game')->board[$pos])-1][0] != $session->get('game')->player)) {
+        foreach (array_keys($session->getFromSession('game')->board) as $pos) {
+            if ((!$session->getFromSession('game')->board[$pos][count($session->getFromSession('game')->board[$pos])-1][0] != $session->getFromSession('game')->player)) {
                 echo "<option value=\"$pos\">$pos</option>";
             }
         }
@@ -179,7 +179,7 @@ foreach ($rendered_tiles as $str) {
 <ol>
     <?php
     // render list of moves
-    $result = $db->query("SELECT * FROM moves WHERE game_id = {$session->get('game_id')}");
+    $result = $db->query("SELECT * FROM moves WHERE game_id = {$session->getFromSession('game_id')}");
     while ($row = $result->fetch_array()) {
         echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
     }
