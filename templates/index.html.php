@@ -9,7 +9,6 @@
     <?php
 
 use Hive\Util;
-use Hive\IndexController;
 use Hive\Session;
 use Hive\Database;
 
@@ -180,18 +179,7 @@ foreach ($rendered_tiles as $str) {
 <ol>
     <?php
     // render list of moves
-    $game_id = $session->get('game_id');
-
-    // Prepare SQL statement
-    $stmt = $db->prepare("SELECT * FROM moves WHERE game_id = ?");
-    $stmt->bind_param("i", $game_id); // "i" indicates the data type is an integer
-
-    // Execute query
-    $stmt->execute();
-
-    // Get the results
-    $result = $stmt->get_result();
-
+    $result = $db->Query("SELECT * FROM moves WHERE game_id = {$session->get('game_id')}");
     while ($row = $result->fetch_array()) {
         echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
     }

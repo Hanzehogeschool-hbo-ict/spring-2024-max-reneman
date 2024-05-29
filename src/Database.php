@@ -3,7 +3,6 @@
 namespace Hive;
 use mysqli;
 use mysqli_result;
-use mysqli_stmt;
 use RuntimeException;
 
 class Database
@@ -42,14 +41,5 @@ class Database
         return intval($this->db->insert_id);
     }
 
-    public function prepare(string $query) : mysqli_stmt {
-        $stmt = $this->db->prepare($query);
-        if ($stmt === false) {
 
-            throw new RuntimeException($this->db->error);
-        }
-        else {
-            return $stmt;
-        }
-    }
 }
