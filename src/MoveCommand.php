@@ -54,13 +54,13 @@ private Database $db;
                 if (isset($this->game->board[$this->to])) $this->game->board[$this->to][] = $tile;
                 else $this->game->board[$this->to] = [$tile];
                 $this->game->player = 1 - $this->game->player;
-                $state = $this->db->Escape($this->game);
+                $state = $this->db->escape($this->game);
                 $last = $this->session->get('last_move') ?? 'null';
-                $this->db->Execute("
+                $this->db->execute("
                 insert into moves (game_id, type, move_from, move_to, previous_id, state)
                 values ({$this->session->get('game_id')}, \"move\", \"$this->from\", \"$this->to\", $last, \"$state\")
             ");
-                $this->session->set('last_move', $this->db->GetInsertId());
+                $this->session->set('last_move', $this->db->getInsertId());
 
             }
         }

@@ -18,8 +18,8 @@ class RestartController {
         $this->session->set('game', new Game());
 
         // Get new game id from database
-        $this->db->Execute('INSERT INTO games VALUES ()');
-        $this->session->set('game_id', $this->db->GetInsertId());
+        $this->db->execute('INSERT INTO games VALUES ()');
+        $this->session->set('game_id', $this->db->getInsertId());
 
         // Redirect back to index
         App::redirect();

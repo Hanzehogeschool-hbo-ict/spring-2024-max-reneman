@@ -179,7 +179,7 @@ foreach ($rendered_tiles as $str) {
 <ol>
     <?php
     // render list of moves
-    $result = $db->Query("SELECT * FROM moves WHERE game_id = {$session->get('game_id')}");
+    $result = $db->query("SELECT * FROM moves WHERE game_id = {$session->get('game_id')}");
     while ($row = $result->fetch_array()) {
         echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
     }

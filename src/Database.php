@@ -14,7 +14,7 @@ class Database
     }
 
     // execute query with result
-    public function Query(string $string): mysqli_result {
+    public function query(string $string): mysqli_result {
         $result = $this->db->query($string);        if ($result === false) {
 
             throw new RuntimeException($this->db->error);
@@ -23,7 +23,7 @@ class Database
     }
 
     // execute query without result
-    public function Execute(string $string): void
+    public function execute(string $string): void
     {
         $result = $this->db->query($string);
         if ($result === false) {
@@ -32,12 +32,12 @@ class Database
     }
 
     // escape string for mysql
-    public function Escape(string $string): string {
+    public function escape(string $string): string {
         return mysqli_real_escape_string($this->db, $string);
     }
 
     // get last insert id
-    public function GetInsertId(): int {
+    public function getInsertId(): int {
         return intval($this->db->insert_id);
     }
 
