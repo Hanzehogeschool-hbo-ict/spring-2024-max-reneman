@@ -33,7 +33,7 @@ class IndexController
         foreach (Util::OFFSETS as $qr) {
             foreach (array_keys($game->board) as $pos) {
                 $qr2 = explode(',', $pos);
-                $to[] = ($qr[0] + $qr2[0]).','.($qr[1] + $qr2[1]);
+                $to[] = strval(intval($qr[0]) + intval($qr2[0])).','.strval(intval($qr[1]) + intval($qr2[1]));
             }
         }
         $to = array_unique($to);
