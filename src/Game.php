@@ -41,4 +41,12 @@ class Game {
         [$self->board, $self->hand, $self->player] = json_decode($serialized, true);
         return $self;
     }
+
+    public function hasAnyPlayerPlayedTile(): bool
+    {
+        $player1Tiles = array_sum($this->hand[0]);
+        $player2Tiles = array_sum($this->hand[1]);
+
+        return $player1Tiles < 10 || $player2Tiles < 10;
+    }
 }

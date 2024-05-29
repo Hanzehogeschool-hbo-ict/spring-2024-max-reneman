@@ -132,7 +132,7 @@ foreach ($rendered_tiles as $str) {
         foreach ($to as $pos) {
             if(!(isset($game->board[$pos]))){
                 if(!(count($session->get('game')->board) && !Util::hasNeighBour($pos, $session->get('game')->board))) {
-                    if (!(array_sum($session->get('game')->hand[$session->get('game')->player]) < 11 && !Util::neighboursAreSameColor($session->get('game')->player, $pos, $game->board)))
+                    if (!(array_sum($session->get('game')->hand[$session->get('game')->player]) < 11 && !Util::neighboursAreSameColor($session->get('game')->player, $pos, $session->get('game')->board)))
                     echo "<option value=\"$pos\">$pos</option>";
                 }
             }
@@ -142,11 +142,6 @@ foreach ($rendered_tiles as $str) {
     <input type="submit" value="Play">
 </form>
 <form method="post" action="/move">
-
-
-
-
-
 
     <select name="from">
         <?php
@@ -168,14 +163,6 @@ foreach ($rendered_tiles as $str) {
         }
         ?>
     </select>
-
-
-
-
-
-
-
-
 
 
     <input type="submit" value="Move">
