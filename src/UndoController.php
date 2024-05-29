@@ -12,8 +12,6 @@ class UndoController
     }
     public function handlePost(): void
     {
-
-
         // restore last move from database
         $last_move = $this->session->get('last_move') ?? 0;
         $result = $this->db>Query("SELECT previous_id, state FROM moves WHERE id = $last_move")->fetch_array();

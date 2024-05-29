@@ -10,6 +10,12 @@
 
 use Hive\Util;
 use Hive\IndexController;
+use Hive\Session;
+use Hive\Database;
+
+$db = new Database();
+$session = new Session();
+
 
 $width = 35;
 $height = 30;
@@ -17,7 +23,7 @@ $height = 30;
 // find minimum values for q and r to render board
 $min_q = 1000;
 $min_r = 1000;
-foreach ($game->board as $pos => $tile) {
+foreach ($session->get('game')->board as $pos => $tile) {
     $qr = explode(',', $pos);
     if ($qr[0] < $min_q) $min_q = $qr[0];
     if ($qr[1] < $min_r) $min_r = $qr[1];
@@ -50,14 +56,14 @@ function generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height) {
     return $str;
 }
 // render tiles in play
-foreach (array_filter($game->board) as $pos => $tile) {
+foreach (array_filter($session->get('game')->board) as $pos => $tile) {
     $qr = explode(',', $pos);
     $rendered_tiles[$pos] = generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height);
 }
 
 // render empty tiles adjacent to existing tiles
 foreach ($to as $pos) {
-    if (!array_key_exists($pos, $game->board)) {
+    if (!array_key_exists($pos, $session->get('game')->board)) {
         $qr = explode(',', $pos);
         $tile = [["&nbsp;"]];
         $rendered_tiles[$pos] = generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height);
@@ -84,7 +90,7 @@ foreach ($rendered_tiles as $str) {
     White:
     <?php
     // render tiles in white's hand
-    foreach ($game->hand[0] as $tile => $ct) {
+    foreach ($session->get('game')->hand[0] as $tile => $ct) {
         for ($i = 0; $i < $ct; $i++) {
             echo '<div class="tile player0"><span>'.$tile."</span></div>";
         }
@@ -95,7 +101,7 @@ foreach ($rendered_tiles as $str) {
     Black:
     <?php
     // render tiles in black's hand
-    foreach ($game->hand[1] as $tile => $ct) {
+    foreach ($session->get('game')->hand[1] as $tile => $ct) {
         for ($i = 0; $i < $ct; $i++) {
             echo '<div class="tile player1"><span>'.$tile."</span></div>";
         }
@@ -105,14 +111,14 @@ foreach ($rendered_tiles as $str) {
 <div class="turn">
     Turn: <?php
         // render active player
-        if ($game->player == 0) echo "White"; else echo "Black";
+        if ($session->get('game')->player == 0) echo "White"; else echo "Black";
     ?>
 </div>
 <form method="post" action="/play">
     <select name="piece">
         <?php
         // render list of tile types
-        $pieces = IndexController::getPieces($game);
+        $pieces = IndexController::getPieces($session->get('game'));
         foreach ($pieces as $piece){
             echo $piece;
         }
@@ -125,8 +131,8 @@ foreach ($rendered_tiles as $str) {
         // render list of possible moves
         foreach ($to as $pos) {
             if(!(isset($game->board[$pos]))){
-                if(!(count($game->board) && !Util::hasNeighBour($pos, $game->board))) {
-                    if (!(array_sum($game->hand[$game->player]) < 11 && !Util::neighboursAreSameColor($game->player, $pos, $game->board)))
+                if(!(count($session->get('game')->board) && !Util::hasNeighBour($pos, $session->get('game')->board))) {
+                    if (!(array_sum($session->get('game')->hand[$session->get('game')->player]) < 11 && !Util::neighboursAreSameColor($session->get('game')->player, $pos, $game->board)))
                     echo "<option value=\"$pos\">$pos</option>";
                 }
             }
@@ -145,8 +151,8 @@ foreach ($rendered_tiles as $str) {
     <select name="from">
         <?php
         // render list of positions in board
-        foreach (array_keys($game->board) as $pos) {
-            if ((!$game->board[$pos][count($game->board[$pos])-1][0] != $game->player)) {
+        foreach (array_keys($session->get('game')->board) as $pos) {
+            if ((!$session->get('game')->board[$pos][count($session->get('game')->board[$pos])-1][0] != $session->get('game')->player)) {
                 echo "<option value=\"$pos\">$pos</option>";
             }
         }
@@ -187,8 +193,6 @@ foreach ($rendered_tiles as $str) {
 <ol>
     <?php
     // render list of moves
-    $db = \Hive\Database::inst();
-    $session = \Hive\Session::inst();
     $result = $db->Query("SELECT * FROM moves WHERE game_id = {$session->get('game_id')}");
     while ($row = $result->fetch_array()) {
         echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
