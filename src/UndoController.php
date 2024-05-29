@@ -24,6 +24,6 @@ class UndoController
         $this->session->set('game', Game::fromString($result[1]));
 
         // redirect back to index
-
+        App::redirect();
     }
 }

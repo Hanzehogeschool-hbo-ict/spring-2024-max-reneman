@@ -33,11 +33,11 @@ foreach ($session->get('game')->board as $pos => $tile) {
 $min_q--;
 $min_r--;
 
-// store rendered tiles so they can later be rendered in the proper order
+// store rendered tiles, so they can later be rendered in the proper order
 $rendered_tiles = [];
 
 // function to generate tile's HTML
-function generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height) {
+    function generateTileHTML($qr, $tile, $min_q, $min_r, $width, $height): string {
     $h = count($tile);
     $str = '<div class="tile ';
     if ($tile[$h-1][0] == "&nbsp;") {
@@ -118,7 +118,7 @@ foreach ($rendered_tiles as $str) {
     <select name="piece">
         <?php
         // render list of tile types
-        $pieces = IndexController::getPieces($session->get('game'));
+        $pieces = (new Hive\IndexController)->getPieces($session->get('game'));
         foreach ($pieces as $piece){
             echo $piece;
         }
@@ -180,7 +180,18 @@ foreach ($rendered_tiles as $str) {
 <ol>
     <?php
     // render list of moves
-    $result = $db->Query("SELECT * FROM moves WHERE game_id = {$session->get('game_id')}");
+    $game_id = $session->get('game_id');
+
+    // Prepare SQL statement
+    $stmt = $db->prepare("SELECT * FROM moves WHERE game_id = ?");
+    $stmt->bind_param("i", $game_id); // "i" indicates the data type is an integer
+
+    // Execute query
+    $stmt->execute();
+
+    // Get the results
+    $result = $stmt->get_result();
+
     while ($row = $result->fetch_array()) {
         echo '<li>'.$row[2].' '.$row[3].' '.$row[4].'</li>';
     }
