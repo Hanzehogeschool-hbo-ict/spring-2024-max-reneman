@@ -20,12 +20,12 @@ class Util {
         if ($a[1] == $b[1] && abs($a[0] - $b[0]) == 1) return true;
         // two tiles are also neighbours if BOTH coordinates differ by one and both DIFFERENCES sum to zero
         // e.g., 0,0 and -1,1 are neigbours
-        if ($a[0] + $a[1] == $b[0] + $b[1]) return true;
+        if ((intval($a[0]) + intval($a[1])) == (intval($b[0]) + intval($b[1]))) return true;
         return false;
     }
 
     // check if a position has a neighbour already on the board
-    public static function hasNeighBour(string $a, array $board) {
+    public static function hasNeighBour(string $a, array $board) : bool {
         foreach (array_keys($board) as $b) {
             if (self::isNeighbour($a, $b)) return true;
         }
@@ -54,8 +54,8 @@ class Util {
             $next = explode(',', array_shift($queue));
             foreach (Util::OFFSETS as $qr) {
                 list($q, $r) = $qr;
-                $q += $next[0];
-                $r += $next[1];
+                $q += intval($next[0]);
+                $r += intval($next[1]);
                 if (in_array("$q,$r", $all)) {
                     $queue[] = "$q,$r";
                     $all = array_diff($all, ["$q,$r"]);
@@ -78,8 +78,8 @@ class Util {
         $b = explode(',', $to);
         $common = [];
         foreach (self::OFFSETS as $qr) {
-            $q = $b[0] + $qr[0];
-            $r = $b[1] + $qr[1];
+            $q = intval($b[0]) + intval($qr[0]);
+            $r = intval($b[1]) + intval($qr[1]);
             if (self::isNeighbour($from, $q.",".$r)) $common[] = $q.",".$r;
         }
 
