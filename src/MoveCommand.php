@@ -2,6 +2,7 @@
 
 namespace Hive;
 
+use Hive\tiles\Ant;
 use Hive\tiles\Beetle;
 use Hive\tiles\Queen;
 
@@ -22,6 +23,7 @@ class MoveCommand implements CommandInterface
         $this->db = $db;
     }
 
+
     public function execute(): void
     {
         if ($this->validateMove()) {
@@ -33,6 +35,10 @@ class MoveCommand implements CommandInterface
 
     private function validateMove(): bool
     {
+        $selected_tile = end($this->game->board[$this->from]);
+
+        $tile_type = $selected_tile[1];
+
         if (!$this->isPositionNotEmpty()) {
             $this->session->setOnSession('error', 'Board position is empty');
             return false;
@@ -54,15 +60,19 @@ class MoveCommand implements CommandInterface
         }
 
         //TODO check current tile movement rules
-        if (!Queen::class->isValidMove($this->from, $this->to, $this->game) ){
+        if ($tile_type === 'Q' && !(new tiles\Queen)->isValidMove($this->from, $this->to, $this->game)) {
             $this->session->setOnSession('error', 'Invalid Queen move');
             return false;
         }
-
-        if (!Beetle::class->isValidMove()){
+        if ($tile_type === 'B' && !(new tiles\Beetle)->isValidMove($this->from, $this->to, $this->game)) {
             $this->session->setOnSession('error', 'Invalid Beetle move');
             return false;
         }
+        if ($tile_type === 'A' && !(new tiles\Ant)->isValidMove($this->from, $this->to, $this->game)) {
+            $this->session->setOnSession('error', 'Invalid Ant move');
+            return false;
+        }
+
 
         return true;
     }
@@ -88,7 +98,7 @@ class MoveCommand implements CommandInterface
             return false;
         }
 
-        if (Util::hasMultipleHives($this->game->board)) {
+        if (Util::hasMultipleHivesNewBoard($this->game->board,$this->from,$this->to)) {
             $this->session->setOnSession("error", "Move would split hive");
             return false;
         }

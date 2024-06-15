@@ -3,6 +3,8 @@
 namespace Hive;
 
 // game state
+use InvalidArgumentException;
+
 class Game {
     // current board state
     // this is an associative array mapping board positions to stacks of tiles
@@ -41,6 +43,8 @@ class Game {
         [$self->board, $self->hand, $self->player] = json_decode($serialized, true);
         return $self;
     }
+
+
 
     public function hasAnyPlayerPlayedTile(): bool
     {

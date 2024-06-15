@@ -50,7 +50,7 @@ $rendered_tiles = [];
     $str .= 'px; top: ';
     $str .= $height * ($qr[1] - $min_r);
     $str .= "px;\">$qr[0],$qr[1]<span>";
-    $str .= $tile[$h-1][1];
+    $str .= $tile[$h - 1][1] ?? "";
     $str .= '</span></div>';
     return $str;
 }

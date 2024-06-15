@@ -32,6 +32,9 @@ class Util {
         return false;
     }
 
+
+
+
     // check if all neighbours of a position belong to the same player
     public static function neighboursAreSameColor(int $player, string $a, array $board): bool
     {
@@ -65,6 +68,38 @@ class Util {
         return !!$all;
     }
 
+
+    public static function hasMultipleHivesNewBoard(array $board, $from, $to): bool
+    {
+        // Remove $from from the board
+        unset($board[$from]);
+
+        // Mark $to as filled
+        if (!isset($board[$to])) {
+            $board[$to] = 1;
+        }
+
+        // Use flood fill to find all tiles reachable from a single (essentially random) tile
+        // If any tiles are unreachable, the hive is split
+        $all = array_keys($board);
+        $queue = [array_shift($all)];
+
+        while ($queue) {
+            $next = explode(',', array_shift($queue));
+
+            foreach (Util::OFFSETS as $qr) {
+                list($q, $r) = $qr;
+                $q += intval($next[0]);
+                $r += intval($next[1]);
+
+                if (in_array("$q,$r", $all)) {
+                    $queue[] = "$q,$r";
+                    $all = array_diff($all, ["$q,$r"]);
+                }
+            }
+        }
+        return !!$all;
+    }
     // check whether a move between two positions is valid given the rules for slides
     // which are used by all tiles except the grasshopper
     public static function slide(array $board, string $from, string $to): bool
