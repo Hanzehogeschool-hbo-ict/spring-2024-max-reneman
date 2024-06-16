@@ -60,16 +60,17 @@ class MoveCommand implements CommandInterface
         }
 
         //TODO check current tile movement rules
-        if ($tile_type === 'Q' && !(new tiles\Queen)->isValidMove($this->from, $this->to, $this->game)) {
-            $this->session->setOnSession('error', 'Invalid Queen move');
-            return false;
-        }
-        if ($tile_type === 'B' && !(new tiles\Beetle)->isValidMove($this->from, $this->to, $this->game)) {
-            $this->session->setOnSession('error', 'Invalid Beetle move');
-            return false;
-        }
-        if ($tile_type === 'A' && !(new tiles\Ant)->isValidMove($this->from, $this->to, $this->game)) {
-            $this->session->setOnSession('error', 'Invalid Ant move');
+        $isValid = match ($tile_type) {
+            'Q' => (new tiles\Queen)->isValidMove($this->from, $this->to, $this->game),
+            'B' => (new tiles\Beetle)->isValidMove($this->from, $this->to, $this->game),
+            'S' => (new tiles\Spider)->isValidMove($this->from, $this->to, $this->game),
+            'A' => (new tiles\Ant)->isValidMove($this->from, $this->to, $this->game),
+            'G' => (new tiles\Grasshopper)->isValidMove($this->from, $this->to, $this->game),
+            default => throw new \InvalidArgumentException("Invalid tile type: $tile_type"),
+        };
+
+        if (!$isValid) {
+            $this->session->setOnSession('error', "Invalid $tile_type move");
             return false;
         }
 

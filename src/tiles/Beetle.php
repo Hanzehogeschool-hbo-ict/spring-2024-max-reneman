@@ -13,9 +13,10 @@ class Beetle implements TileInterface
     }
 
 
-    #[\Override] public function getAllValidMoves(): array
+    #[\Override] public function getAllValidMoves($from, $game): array
     {
         // TODO: Implement getAllValidMoves() method.
+        return [];
     }
 
     #[\Override] public function getName(): string

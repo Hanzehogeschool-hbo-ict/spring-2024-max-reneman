@@ -4,9 +4,17 @@ namespace Hive\tiles;
 
 class Grasshopper implements TileInterface
 {
+    const array OFFSETS = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
     #[\Override] public function isValidMove($from, $to, $game): bool
     {
         // TODO: Implement isValidMove() method.
+
+
+
+
+
+
+
         /**
          * De sprinkhaan is nog niet geïmplementeerd. Implementeer de regels om deze
          * steen te bewegen.
@@ -20,9 +28,10 @@ class Grasshopper implements TileInterface
          */
     }
 
-    #[\Override] public function getAllValidMoves(): array
+    #[\Override] public function getAllValidMoves($from, $game): array
     {
         // TODO: Implement getAllValidMoves() method.
+        return [];
     }
 
     #[\Override] public function getName(): string

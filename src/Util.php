@@ -32,9 +32,6 @@ class Util {
         return false;
     }
 
-
-
-
     // check if all neighbours of a position belong to the same player
     public static function neighboursAreSameColor(int $player, string $a, array $board): bool
     {
@@ -45,29 +42,6 @@ class Util {
         }
         return true;
     }
-
-    // check if the hive is currently split
-    public static function hasMultipleHives(array $board): bool
-    {
-        // use flood fill to find all tiles reachable from a single (essentially random) tile
-        // if any tiles are unreachable, the hive is split
-        $all = array_keys($board);
-        $queue = [array_shift($all)];
-        while ($queue) {
-            $next = explode(',', array_shift($queue));
-            foreach (Util::OFFSETS as $qr) {
-                list($q, $r) = $qr;
-                $q += intval($next[0]);
-                $r += intval($next[1]);
-                if (in_array("$q,$r", $all)) {
-                    $queue[] = "$q,$r";
-                    $all = array_diff($all, ["$q,$r"]);
-                }
-            }
-        }
-        return !!$all;
-    }
-
 
     public static function hasMultipleHivesNewBoard(array $board, $from, $to): bool
     {
@@ -135,5 +109,17 @@ class Util {
         // high as the lowest stack at the two common neighbours, because that would allow the moving tile
         // to physically slide to the target location without having to squeeze between two tiles
         return min(count($a), count($b)) <= max(count($from), count($to));
+    }
+
+    public static function getNeighbors(mixed $current): array
+    {
+        $current = explode(',', $current);
+        $neighbors = [];
+        foreach (self::OFFSETS as $offset) {
+            $q = $current[0] + $offset[0];
+            $r = $current[1] + $offset[1];
+            $neighbors[] = "$q,$r";
+        }
+        return $neighbors;
     }
 }
