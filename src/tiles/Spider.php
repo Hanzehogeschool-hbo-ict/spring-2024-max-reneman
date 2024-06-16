@@ -35,7 +35,7 @@ class Spider implements TileInterface
             }
 
             // Get all neighboring positions.
-            $neighbors = Util::getNeighbors($current);
+            $neighbors = Util::getAllNeighbors($current, $game->board);
 
             foreach ($neighbors as $neighbor) {
                 // If the neighbor is not visited and is empty, add it to the queue.
@@ -47,7 +47,7 @@ class Spider implements TileInterface
         return false;
     }
 
-#[\Override] public function getAllValidMoves($from, $game): array
+    #[\Override] public function getAllValidMoves($from, $game): array
     {
         $validMoves = [];
 
@@ -58,7 +58,7 @@ class Spider implements TileInterface
             [$current, $steps] = array_shift($queue);
             $visited[$current] = true;
 
-            $neighbors = Util::getNeighbors($current);
+            $neighbors = Util::getNeighboringTiles($current, $game->board);
 
             foreach ($neighbors as $neighbor) {
                 if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor]) && $steps < 3) {

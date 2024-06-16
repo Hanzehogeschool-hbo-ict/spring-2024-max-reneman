@@ -111,14 +111,31 @@ class Util {
         return min(count($a), count($b)) <= max(count($from), count($to));
     }
 
-    public static function getNeighbors(mixed $current): array
+    public static function getNeighboringTiles(mixed $current, array $board): array
     {
         $current = explode(',', $current);
         $neighbors = [];
         foreach (self::OFFSETS as $offset) {
             $q = $current[0] + $offset[0];
             $r = $current[1] + $offset[1];
-            $neighbors[] = "$q,$r";
+            $position = "$q,$r";
+            // Check if a tile exists at the position
+            if (isset($board[$position])) {
+                $neighbors[] = $position;
+            }
+        }
+        return $neighbors;
+    }
+
+    public static function getAllNeighbors(mixed $current): array
+    {
+        $current = explode(',', $current);
+        $neighbors = [];
+        foreach (self::OFFSETS as $offset) {
+            $q = $current[0] + $offset[0];
+            $r = $current[1] + $offset[1];
+            $position = "$q,$r";
+            $neighbors[] = $position;
         }
         return $neighbors;
     }

@@ -3,7 +3,6 @@
 namespace Hive\tiles;
 
 use Hive\tiles\TileInterface;
-use Hive\Util;
 
 class Queen implements TileInterface
 {
@@ -19,12 +18,12 @@ class Queen implements TileInterface
             return false;
         }
 
-        $neighbors = Util::getNeighbors($from);
+        $neighbors = \Hive\Util::getNeighboringTiles($from, $game->board);
         if (!in_array($to, $neighbors)) {
             return false;
         }
 
-        if (!Util::slide($game->board, $from, $to)) {
+        if (!\Hive\Util::slide($game->board, $from, $to)) {
             return false;
         }
 
@@ -36,11 +35,11 @@ class Queen implements TileInterface
         $validMoves = [];
 
         // Get all neighboring positions.
-        $neighbors = Util::getNeighbors($from);
+        $neighbors = \Hive\Util::getNeighboringTiles($from, $game->board);
 
         foreach ($neighbors as $neighbor) {
             // If the neighbor is empty and the Queen can slide to it, add it to the valid moves.
-            if (!isset($game->board[$neighbor]) && Util::slide($game->board, $from, $neighbor)) {
+            if (!isset($game->board[$neighbor]) && \Hive\Util::slide($game->board, $from, $neighbor)) {
                 $validMoves[] = $neighbor;
             }
         }

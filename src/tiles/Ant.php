@@ -2,6 +2,7 @@
 
 namespace Hive\tiles;
 use Hive\Util;
+use function MongoDB\BSON\toJSON;
 
 class Ant implements TileInterface
 {
@@ -34,7 +35,7 @@ class Ant implements TileInterface
             }
 
             // Get all neighboring positions.
-            $neighbors = Util::getNeighbors($current);
+            $neighbors = Util::getNeighboringTiles($current, $game->board);
 
             foreach ($neighbors as $neighbor) {
                 // If the neighbor is not visited and is empty, add it to the queue.
@@ -61,17 +62,18 @@ class Ant implements TileInterface
             $visited[$current] = true;
 
             // Get all neighboring positions.
-            $neighbors = Util::getNeighbors($current);
+            $neighbors = Util::getNeighboringTiles($current, $game->board);
 
             foreach ($neighbors as $neighbor) {
+                echo $neighbor;
                 // If the neighbor is not visited and is empty, add it to the queue and to the valid moves.
-                if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor])) {
+                // Also check if the neighbor is not already in the queue.
+                if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor]) && !in_array($neighbor, $queue)) {
                     $queue[] = $neighbor;
                     $validMoves[] = $neighbor;
                 }
             }
         }
-
         return $validMoves;
     }
 

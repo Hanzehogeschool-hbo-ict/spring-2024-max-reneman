@@ -38,8 +38,23 @@ class QueenTest extends TestCase
         $this->assertFalse($queen->isValidMove('0,0', '-2,2', $game));
     }
 
-    public function testGetAllValidMoves()
-    {
-
-    }
+//    public function testGetAllValidMoves()
+//    {
+//        $queen = new Queen();
+//        $game = new \stdClass();
+//        $game->board = [
+//            '0,0' => [['white', 'Q']]
+//        ];
+//
+//        $expectedMoves = [
+//            '0,1', '1,0', '1,-1', '0,-1', '-1,0', '-1,1'
+//        ];
+//
+//        $actualMoves = $queen->getAllValidMoves('0,0', $game);
+//
+//        sort($expectedMoves);
+//        sort($actualMoves);
+//
+//        $this->assertEquals($expectedMoves, $actualMoves);
+//    }
 }
