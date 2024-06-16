@@ -4,37 +4,96 @@ namespace Hive\tiles;
 
 class Grasshopper implements TileInterface
 {
-    const array OFFSETS = [[0, 1], [0, -1], [1, 0], [-1, 0], [-1, 1], [1, -1]];
-    #[\Override] public function isValidMove($from, $to, $game): bool
+    const OFFSETS = [
+        [1, 0], // East
+        [-1, 0], // West
+        [0, -1],  // North
+        [0, 1],  // South
+        [1, -1], // Northeast
+        [-1, 1],  // Southwest
+    ];
+
+    #[\Override]
+    public function isValidMove($from, $to, $game): bool
     {
-        // TODO: Implement isValidMove() method.
+        $directions = [
+            // East
+            [1, 0],
+            // West
+            [-1, 0],
+            // North
+            [0, -1],
+            // South
+            [0, 1],
+            // Northeast
+            [1, -1],
+            // Southwest
+            [-1, 1]
+        ];
 
+        foreach ($directions as $offset) {
+            $hopDestination = $this->getPath($from, $offset, $game->board);
 
+            // If the hop destination matches the target and a hop has occurred.
+            if ($hopDestination === $to) {
+                return true;
+            }
+        }
 
-
-
-
-
-        /**
-         * De sprinkhaan is nog niet geïmplementeerd. Implementeer de regels om deze
-         * steen te bewegen.
-         * a. Een sprinkhaan verplaatst zich door in een rechte lijn een sprong te maken
-         *      naar een veld meteen achter een andere steen in de richting van de sprong.
-         * b. Een sprinkhaan mag zich niet verplaatsen naar het veld waar hij al staat.
-         * c. Een sprinkhaan moet over minimaal één steen springen.
-         * d. Een sprinkhaan mag niet naar een bezet veld springen.
-         * e. Een sprinkhaan mag niet over lege velden springen. Dit betekent dat alle
-         *      velden tussen de start- en eindpositie bezet moeten zijn.
-         */
+        return false;
     }
 
-    #[\Override] public function getAllValidMoves($from, $game): array
+    private function getPath($from, $offset, $board)
     {
-        // TODO: Implement getAllValidMoves() method.
-        return [];
+        list($fromX, $fromY) = array_map('intval', explode(',', $from));
+
+        list($dx, $dy) = $offset;
+
+        $x = $fromX;
+        $y = $fromY;
+
+        $hasHopped = false;
+
+        // Continue moving in the same direction until an unoccupied tile is found.
+        while (true) {
+            $x += $dx;
+            $y += $dy;
+
+            // Check for occupied tile
+            if (isset($board["$x,$y"])) {
+                $hasHopped = true;
+            }
+            // Check for unoccupied tile and that it has hopped at least once.
+            elseif (!isset($board["$x,$y"]) && $hasHopped) {
+                return "$x,$y";
+            }
+
+            // Reached the border of the game tiles. Exit the loop.
+            if (abs($x - $fromX) > 100 || abs($y - $fromY) > 100) {
+                break;
+            }
+        }
+
+        return null;
     }
 
-    #[\Override] public function getName(): string
+    #[\Override]
+    public function getAllValidMoves($from, $game): array
+    {
+        $validMoves = [];
+
+        foreach (self::OFFSETS as $offset) {
+            $to = $this->getPath($from, [$from[0] + $offset[0], $from[1] + $offset[1]], $offset, $game->board);
+            if ($to !== null && $this->isValidMove($from, $to[0], $game)) {
+                $validMoves[] = $to[0];
+            }
+        }
+
+        return $validMoves;
+    }
+
+    #[\Override]
+    public function getName(): string
     {
         return "G";
     }
