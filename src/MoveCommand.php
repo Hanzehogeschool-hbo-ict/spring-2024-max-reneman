@@ -67,6 +67,12 @@ class MoveCommand implements CommandInterface
             default => throw new InvalidArgumentException("Invalid tile type: $tile_type"),
         };
 
+        $output = (new tiles\Queen)->getAllValidMoves($this->from, $this->game);
+        var_dump($output);
+        foreach ($output as $move) {
+            var_dump($move);
+        }
+
         if (!$isValid) {
             $this->session->setOnSession('error', "Invalid $tile_type move");
             return false;

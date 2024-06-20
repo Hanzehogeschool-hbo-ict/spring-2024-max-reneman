@@ -35,7 +35,7 @@ class Ant implements TileInterface
             }
 
             // Get all neighboring positions.
-            $neighbors = Util::getNeighboringTiles($current, $game->board);
+            $neighbors = Util::getNeighboringOccupiedTiles($current, $game->board);
 
             foreach ($neighbors as $neighbor) {
                 // If the neighbor is not visited and is empty, add it to the queue.
@@ -62,7 +62,7 @@ class Ant implements TileInterface
             $visited[$current] = true;
 
             // Get all neighboring positions.
-            $neighbors = Util::getNeighboringTiles($current, $game->board);
+            $neighbors = Util::getNeighboringOccupiedTiles($current, $game->board);
 
             foreach ($neighbors as $neighbor) {
                 echo $neighbor;

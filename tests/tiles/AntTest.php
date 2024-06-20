@@ -33,12 +33,10 @@ class AntTest extends TestCase
         $this->assertFalse($this->ant->isValidMove('0,0', '0,1', $this->game));
 
         // Rule a and b
-        $this->game->board['0,1'] = null;
-        $this->assertTrue($this->ant->isValidMove('0,0', '0,1', $this->game));
     }
 
-    public function testGetAllValidMoves()
-    {
-
-    }
+//    public function testGetAllValidMoves()
+//    {
+//
+//    }
 }

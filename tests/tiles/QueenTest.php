@@ -4,6 +4,7 @@ namespace tiles;
 
 use Hive\tiles\Queen;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class QueenTest extends TestCase
 {
@@ -17,7 +18,7 @@ class QueenTest extends TestCase
     public function testIsValidMove()
     {
         $queen = new Queen();
-        $game = new \stdClass();
+        $game = new stdClass();
         $game->board = [
             '0,0' => [['white', 'Q']]
         ];
@@ -38,23 +39,46 @@ class QueenTest extends TestCase
         $this->assertFalse($queen->isValidMove('0,0', '-2,2', $game));
     }
 
-//    public function testGetAllValidMoves()
-//    {
-//        $queen = new Queen();
-//        $game = new \stdClass();
-//        $game->board = [
-//            '0,0' => [['white', 'Q']]
-//        ];
-//
-//        $expectedMoves = [
-//            '0,1', '1,0', '1,-1', '0,-1', '-1,0', '-1,1'
-//        ];
-//
-//        $actualMoves = $queen->getAllValidMoves('0,0', $game);
-//
-//        sort($expectedMoves);
-//        sort($actualMoves);
-//
-//        $this->assertEquals($expectedMoves, $actualMoves);
-//    }
+    public function testGetAllValidMovesBase()
+    {
+        $queen = new Queen();
+        $game = new stdClass();
+        $game->board = [
+            '0,0' => [['white', 'Q']],
+        ];
+
+        $expectedMoves = [
+            '0,1', '1,0', '1,-1', '0,-1', '-1,0', '-1,1'
+        ];
+
+        $actualMoves = $queen->getAllValidMoves('0,0', $game);
+
+        sort($expectedMoves);
+        sort($actualMoves);
+
+        $this->assertEquals($expectedMoves, $actualMoves);
+
+    }
+
+    public function testGetAllValidMoves()
+    {
+        $queen = new Queen();
+        $game = new stdClass();
+        $game->board = [
+            '0,0' => [['white', 'Q']],
+            '0,1' => [['black', 'Q']],
+        ];
+
+        $expectedMoves = [
+            '1,0', '1,-1', '0,-1', '-1,0', '-1,1'
+        ];
+
+        $actualMoves = $queen->getAllValidMoves('0,0', $game);
+
+        sort($expectedMoves);
+        sort($actualMoves);
+
+        $this->assertEquals($expectedMoves, $actualMoves);
+
+    }
 }

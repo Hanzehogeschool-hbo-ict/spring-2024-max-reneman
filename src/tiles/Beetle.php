@@ -14,7 +14,7 @@ class Beetle implements TileInterface
         }
 
         // Beetle can move to any neighboring tile
-        $neighbors = Util::getAllNeighbors($from);
+        $neighbors = Util::getAllNeighboringPositions($from);
         if (!in_array($to, $neighbors)) {
             return false;
         }
@@ -25,7 +25,7 @@ class Beetle implements TileInterface
     #[Override] public function getAllValidMoves($from, $game): array
     {
         // Beetle can move to any neighboring tile
-        return Util::getAllNeighbors($from);
+        return Util::getAllNeighboringPositions($from);
     }
 
     #[Override] public function getName(): string

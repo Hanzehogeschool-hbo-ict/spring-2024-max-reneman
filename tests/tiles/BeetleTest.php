@@ -5,6 +5,7 @@ namespace tiles;
 use Hive\tiles\Beetle;
 use Hive\Game;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class BeetleTest extends TestCase
 {
@@ -17,19 +18,47 @@ class BeetleTest extends TestCase
         $this->game = new Game();
     }
 
+    public function testGetAllValidMovesBase()
+    {
+        $beetle = new Beetle();
+        $game = new stdClass();
+        $game->board = [
+            '0,0' => [['white', 'B']],
+        ];
+
+        $expectedMoves = [
+            '0,1', '1,0', '1,-1', '0,-1', '-1,0', '-1,1'
+        ];
+
+        $actualMoves = $beetle->getAllValidMoves('0,0', $game);
+
+        sort($expectedMoves);
+        sort($actualMoves);
+
+        $this->assertEquals($expectedMoves, $actualMoves);
+
+    }
     public function testGetAllValidMoves()
     {
-        $from = '0,0';
-        $this->game->board[$from] = [['B', 0]];
+        $beetle = new Beetle();
+        $game = new stdClass();
+        $game->board = [
+            '0,0' => [['white', 'B']],
+            '0,1' => [['black', 'B']],
+            '1,0' => [['white', 'Q']],
+        ];
 
-        $validMoves = $this->beetle->getAllValidMoves($from, $this->game);
+        $expectedMoves = [
+            '0,1', '1,0', '1,-1', '0,-1', '-1,0', '-1,1'
+        ];
 
-        $this->assertContains('0,1', $validMoves);
-        $this->assertContains('1,0', $validMoves);
-        $this->assertContains('1,-1', $validMoves);
-        $this->assertContains('0,-1', $validMoves);
-        $this->assertContains('-1,0', $validMoves);
-        $this->assertContains('-1,1', $validMoves);
+        $actualMoves = $beetle->getAllValidMoves('0,0', $game);
+
+        sort($expectedMoves);
+        sort($actualMoves);
+
+        $this->assertEquals($expectedMoves, $actualMoves);
+
     }
 
     public function testIsValidMove()

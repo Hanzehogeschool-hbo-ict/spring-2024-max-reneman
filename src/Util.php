@@ -111,7 +111,7 @@ class Util {
         return min(count($a), count($b)) <= max(count($from), count($to));
     }
 
-    public static function getNeighboringTiles(mixed $current, array $board): array
+    public static function getNeighboringOccupiedTiles(mixed $current, array $board): array
     {
         $current = explode(',', $current);
         $neighbors = [];
@@ -127,7 +127,7 @@ class Util {
         return $neighbors;
     }
 
-    public static function getAllNeighbors(mixed $current): array
+    public static function getAllNeighboringPositions(mixed $current): array
     {
         $current = explode(',', $current);
         $neighbors = [];

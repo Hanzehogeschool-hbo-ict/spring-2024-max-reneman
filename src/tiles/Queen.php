@@ -19,7 +19,7 @@ class Queen implements TileInterface
             return false;
         }
 
-        $neighbors = Util::getNeighboringTiles($from, $game->board);
+        $neighbors = Util::getAllNeighboringPositions($from);
         if (!in_array($to, $neighbors)) {
             return false;
         }
@@ -35,12 +35,10 @@ class Queen implements TileInterface
     {
         $validMoves = [];
 
-        // Get all neighboring positions.
-        $neighbors = Util::getNeighboringTiles($from, $game->board);
+        $neighbors = Util::getAllNeighboringPositions($from);
 
         foreach ($neighbors as $neighbor) {
-            // If the neighbor is empty and the Queen can slide to it, add it to the valid moves.
-            if (!isset($game->board[$neighbor]) && Util::slide($game->board, $from, $neighbor)) {
+            if ($this->isValidMove($from, $neighbor, $game)) {
                 $validMoves[] = $neighbor;
             }
         }
