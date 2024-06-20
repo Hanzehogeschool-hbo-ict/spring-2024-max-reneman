@@ -2,9 +2,11 @@
 
 namespace Hive\tiles;
 
+use Override;
+
 class Grasshopper implements TileInterface
 {
-    const OFFSETS = [
+    const array OFFSETS = [
         [1, 0], // East
         [-1, 0], // West
         [0, -1],  // North
@@ -13,7 +15,7 @@ class Grasshopper implements TileInterface
         [-1, 1],  // Southwest
     ];
 
-    #[\Override]
+    #[Override]
     public function isValidMove($from, $to, $game): bool
     {
         $directions = [
@@ -43,7 +45,7 @@ class Grasshopper implements TileInterface
         return false;
     }
 
-    private function getPath($from, $offset, $board)
+    private function getPath($from, $offset, $board): ?string
     {
         list($fromX, $fromY) = array_map('intval', explode(',', $from));
 
@@ -77,13 +79,13 @@ class Grasshopper implements TileInterface
         return null;
     }
 
-    #[\Override]
+    #[Override]
     public function getAllValidMoves($from, $game): array
     {
         $validMoves = [];
 
         foreach (self::OFFSETS as $offset) {
-            $to = $this->getPath($from, [$from[0] + $offset[0], $from[1] + $offset[1]], $offset, $game->board);
+            $to = $this->getPath($from, [$from[0] + $offset[0], $from[1] + $offset[1]], $offset);
             if ($to !== null && $this->isValidMove($from, $to[0], $game)) {
                 $validMoves[] = $to[0];
             }
@@ -92,7 +94,7 @@ class Grasshopper implements TileInterface
         return $validMoves;
     }
 
-    #[\Override]
+    #[Override]
     public function getName(): string
     {
         return "G";

@@ -3,7 +3,6 @@
 namespace Hive;
 
 // game state
-use InvalidArgumentException;
 
 class Game {
     // current board state

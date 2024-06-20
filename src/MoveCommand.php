@@ -2,9 +2,7 @@
 
 namespace Hive;
 
-use Hive\tiles\Ant;
-use Hive\tiles\Beetle;
-use Hive\tiles\Queen;
+use InvalidArgumentException;
 
 class MoveCommand implements CommandInterface
 {
@@ -66,7 +64,7 @@ class MoveCommand implements CommandInterface
             'S' => (new tiles\Spider)->isValidMove($this->from, $this->to, $this->game),
             'A' => (new tiles\Ant)->isValidMove($this->from, $this->to, $this->game),
             'G' => (new tiles\Grasshopper)->isValidMove($this->from, $this->to, $this->game),
-            default => throw new \InvalidArgumentException("Invalid tile type: $tile_type"),
+            default => throw new InvalidArgumentException("Invalid tile type: $tile_type"),
         };
 
         if (!$isValid) {

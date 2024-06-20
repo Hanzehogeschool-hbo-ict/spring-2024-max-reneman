@@ -2,12 +2,12 @@
 
 namespace Hive\tiles;
 use Hive\Util;
-use function MongoDB\BSON\toJSON;
+use Override;
 
 class Ant implements TileInterface
 {
 
-    #[\Override] public function isValidMove($from, $to, $game): bool
+    #[Override] public function isValidMove($from, $to, $game): bool
     {
         // Rule c: soldatenmier mag zich niet verplaatsen naar het veld waar hij al staat.
         if ($from === $to) {
@@ -49,7 +49,7 @@ class Ant implements TileInterface
         return false;
     }
 
-    #[\Override] public function getAllValidMoves($from, $game): array
+    #[Override] public function getAllValidMoves($from, $game): array
     {
         $validMoves = [];
 
@@ -77,7 +77,7 @@ class Ant implements TileInterface
         return $validMoves;
     }
 
-    #[\Override] public function getName(): string
+    #[Override] public function getName(): string
     {
         return "A";
     }

@@ -2,12 +2,12 @@
 
 namespace Hive\tiles;
 
-use Hive\tiles\TileInterface;
 use Hive\Util;
+use Override;
 
 class Beetle implements TileInterface
 {
-    #[\Override] public function isValidMove($from, $to, $game): bool
+    #[Override] public function isValidMove($from, $to, $game): bool
     {
         if ($from === $to) {
             return false;
@@ -22,13 +22,13 @@ class Beetle implements TileInterface
         return true;
     }
 
-    #[\Override] public function getAllValidMoves($from, $game): array
+    #[Override] public function getAllValidMoves($from, $game): array
     {
         // Beetle can move to any neighboring tile
         return Util::getAllNeighbors($from);
     }
 
-    #[\Override] public function getName(): string
+    #[Override] public function getName(): string
     {
         return "B";
     }

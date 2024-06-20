@@ -3,10 +3,11 @@
 namespace Hive\tiles;
 
 use Hive\Util;
+use Override;
 
 class Spider implements TileInterface
 {
-    #[\Override] public function isValidMove($from, $to, $game): bool
+    #[Override] public function isValidMove($from, $to, $game): bool
     {
         // Rule c: Een spin mag zich niet verplaatsen naar het veld waar hij al staat.
         if ($from === $to) {
@@ -35,7 +36,7 @@ class Spider implements TileInterface
             }
 
             // Get all neighboring positions.
-            $neighbors = Util::getAllNeighbors($current, $game->board);
+            $neighbors = Util::getAllNeighbors($current);
 
             foreach ($neighbors as $neighbor) {
                 // If the neighbor is not visited and is empty, add it to the queue.
@@ -47,7 +48,7 @@ class Spider implements TileInterface
         return false;
     }
 
-    #[\Override] public function getAllValidMoves($from, $game): array
+    #[Override] public function getAllValidMoves($from, $game): array
     {
         $validMoves = [];
 
@@ -72,7 +73,7 @@ class Spider implements TileInterface
         return $validMoves;
     }
 
-    #[\Override] public function getName(): string
+    #[Override] public function getName(): string
     {
         return "S";
     }
