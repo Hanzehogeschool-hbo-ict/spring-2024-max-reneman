@@ -82,19 +82,19 @@ class IndexController {
         return $a[1] == $b[1] ? $a[0] <=> $b[0] : $a[1] <=> $b[1];
     }
 
-    private function getPossibleMoves($game): array {
-        $to = [];
-        foreach (Util::OFFSETS as $qr) {
-            foreach (array_keys($game->board) as $pos) {
-                $qr2 = explode(',', $pos);
-                $to[] = intval($qr[0]) + intval($qr2[0]) .','. intval($qr[1]) + intval($qr2[1]);
+        private function getPossibleMoves($game): array {
+            $to = [];
+            foreach (Util::OFFSETS as $qr) {
+                foreach (array_keys($game->board) as $pos) {
+                    $qr2 = explode(',', $pos);
+                    $to[] = intval($qr[0]) + intval($qr2[0]) .','. intval($qr[1]) + intval($qr2[1]);
+                }
             }
+            $to = array_unique($to);
+            return count($to) ? $to : ['0,0'];
         }
-        $to = array_unique($to);
-        return count($to) ? $to : ['0,0'];
-    }
 
-    public function getPieces($game): array {
+        public function getPieces($game): array {
         $return = [];
         foreach ($game->hand[$game->player] as $tile => $ct) {
             if($ct !== 0) $return[] = "<option value=\"$tile\">$tile</option>";
