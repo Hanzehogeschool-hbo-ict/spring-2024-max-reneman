@@ -18,26 +18,10 @@ class Grasshopper implements TileInterface
     #[Override]
     public function isValidMove($from, $to, $game): bool
     {
-        $directions = [
-            // East
-            [1, 0],
-            // West
-            [-1, 0],
-            // North
-            [0, -1],
-            // South
-            [0, 1],
-            // Northeast
-            [1, -1],
-            // Southwest
-            [-1, 1]
-        ];
+        foreach (self::OFFSETS as $offset) {
+            [$hopDestination, $isValid] = $this->getPath($from, $offset, $game->board);
 
-        foreach ($directions as $offset) {
-            $hopDestination = $this->getPath($from, $offset, $game->board);
-
-            // If the hop destination matches the target and a hop has occurred.
-            if ($hopDestination === $to) {
+            if ($hopDestination === $to && $isValid) {
                 return true;
             }
         }
@@ -45,7 +29,7 @@ class Grasshopper implements TileInterface
         return false;
     }
 
-    private function getPath($from, $offset, $board): ?string
+    private function getPath($from, $offset, $board): array
     {
         list($fromX, $fromY) = array_map('intval', explode(',', $from));
 
@@ -55,6 +39,7 @@ class Grasshopper implements TileInterface
         $y = $fromY;
 
         $hasHopped = false;
+        $allOccupied = true;
 
         // Continue moving in the same direction until an unoccupied tile is found.
         while (true) {
@@ -67,7 +52,10 @@ class Grasshopper implements TileInterface
             }
             // Check for unoccupied tile and that it has hopped at least once.
             elseif (!isset($board["$x,$y"]) && $hasHopped) {
-                return "$x,$y";
+                return ["$x,$y", $allOccupied];
+            }
+            else {
+                $allOccupied = false;
             }
 
             // Reached the border of the game tiles. Exit the loop.
@@ -76,7 +64,7 @@ class Grasshopper implements TileInterface
             }
         }
 
-        return null;
+        return [null, false];
     }
 
     #[Override]
@@ -85,9 +73,9 @@ class Grasshopper implements TileInterface
         $validMoves = [];
 
         foreach (self::OFFSETS as $offset) {
-            $to = $this->getPath($from, [$from[0] + $offset[0], $from[1] + $offset[1]], $offset);
-            if ($to !== null && $this->isValidMove($from, $to[0], $game)) {
-                $validMoves[] = $to[0];
+            [$to, $isValid] = $this->getPath($from, $offset, $game->board);
+            if ($to !== null && $isValid) {
+                $validMoves[] = $to;
             }
         }
 

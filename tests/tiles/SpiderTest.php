@@ -61,19 +61,20 @@ class SpiderTest extends TestCase
 
     public function testGetAllValidMoves()
     {
-        $this->game->board = [
-            '0,0' => null,
+        $game = new stdClass();
+        $game->board = [
             '1,2' => [['white', 'S']],
             '2,2' => [['white', 'Q']],
             '3,2' => [['white', 'Q']],
-            '4,2' => [['white', 'S']]
+            '4,2' => [['white', 'S']],
+            '2,1' => [['white', 'Q']],
         ];
 
         $expectedMoves = [
-            '4,1', '4,3'
+            '3,3','3,0'
         ];
 
-        $actualMoves = $this->spider->getAllValidMoves('1,2', $this->game);
+        $actualMoves = $this->spider->getAllValidMoves('1,2', $game);
 
         sort($expectedMoves);
         sort($actualMoves);

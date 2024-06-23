@@ -47,7 +47,7 @@ class MoveCommand implements CommandInterface
             return false;
         }
 
-        if ($this->isQueenBeeNotPlayed()) {
+        if ($this->isQueenBeeNotPlayed() and Game::currentPlayerTileAmount($this->game->player)<8  ) {
             $this->session->setOnSession('error', "Queen bee is not played");
             return false;
         }

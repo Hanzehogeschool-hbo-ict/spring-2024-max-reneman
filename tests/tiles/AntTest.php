@@ -22,21 +22,33 @@ class AntTest extends TestCase
         $this->assertEquals('A', $this->ant->getName());
     }
 
-    public function testIsValidMove()
-    {
-        // Rule c
-        $this->game->board['0,0'] = 'A';
-        $this->assertFalse($this->ant->isValidMove('0,0', '0,0', $this->game));
+    public function testIsValidMoveRuleA(){
 
-        // Rule d
+    }
+    public function testIsValidMoveRuleBD(){
+        $this->game->board['0,0'] = 'A';
         $this->game->board['0,1'] = 'A';
         $this->assertFalse($this->ant->isValidMove('0,0', '0,1', $this->game));
-
-        // Rule a and b
+        $this->assertTrue($this->ant->isValidMove('0,0', '0,2', $this->game));
+    }
+    public function testIsValidMoveRuleC(){
+        $this->game->board['0,0'] = 'A';
+        $this->assertFalse($this->ant->isValidMove('0,0', '0,0', $this->game));
     }
 
-//    public function testGetAllValidMoves()
-//    {
-//
-//    }
+    public function testGetAllValidMoves()
+    {
+        $this->game->board['0,0'] = 'A';
+        $this->game->board['0,1'] = 'A';
+
+        $expectedMoves = [
+            '1,1', '1,0', '0,2', '-1,2', '-1,1'
+        ];
+        $actualMoves = $this->ant->getAllValidMoves('0,0', $this->game);
+
+        sort($expectedMoves);
+        sort($actualMoves);
+
+        $this->assertEquals($expectedMoves, $actualMoves);
+    }
 }

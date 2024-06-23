@@ -45,11 +45,14 @@ class Game {
 
 
 
-    public function hasAnyPlayerPlayedTile(): bool
+    public static function currentPlayerTileAmount(String $player): int
     {
-        $player1Tiles = array_sum($this->hand[0]);
-        $player2Tiles = array_sum($this->hand[1]);
+        $self = new self();
+        if($player==0)
+         return array_sum($self->hand[0]);
 
-        return $player1Tiles < 10 || $player2Tiles < 10;
+        if($player==1)
+            return array_sum($self->hand[0]);
+        return "no player selected";
     }
 }

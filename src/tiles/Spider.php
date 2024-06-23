@@ -51,27 +51,39 @@ class Spider implements TileInterface
     #[Override] public function getAllValidMoves($from, $game): array
     {
         $validMoves = [];
-
         $visited = [];
-        $queue = [[$from, 0]];
+        $queue = [[$from, 0, []]];
 
         while (!empty($queue)) {
-            [$current, $steps] = array_shift($queue);
-            $visited[$current] = true;
+            [$current, $steps, $path] = array_shift($queue);
+
+            if ($steps === 3) {
+                // Check if this position is a valid move
+                if ($this->isValidMove($from, $current, $game)) {
+                    $validMoves[] = $current;
+                }
+                continue; // No need to explore further from this position
+            }
 
             $neighbors = Util::getAllNeighboringPositions($current);
 
             foreach ($neighbors as $neighbor) {
                 if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor]) && $steps < 3) {
-                    $queue[] = [$neighbor, $steps + 1];
-                    if ($steps + 1 === 3 && (!Util::getNeighboringOccupiedTiles($neighbor, $game->board) == [] )) {
-                        $validMoves[] = $neighbor;
+                    // Check if moving to this neighbor maintains connectivity
+                    $newPath = $path;
+                    $newPath[] = $neighbor;
+                    if (Util::maintainsConnectivity($from, $neighbor, $newPath, $game)) {
+                        $queue[] = [$neighbor, $steps + 1, $newPath];
+                        $visited[$neighbor] = true;
                     }
                 }
             }
         }
-        return $validMoves;
+
+        return array_unique($validMoves);
     }
+
+
 
     #[Override] public function getName(): string
     {

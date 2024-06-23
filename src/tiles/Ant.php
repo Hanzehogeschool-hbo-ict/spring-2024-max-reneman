@@ -35,7 +35,7 @@ class Ant implements TileInterface
             }
 
             // Get all neighboring positions.
-            $neighbors = Util::getNeighboringOccupiedTiles($current, $game->board);
+            $neighbors = Util::getAllNeighboringPositions($current);
 
             foreach ($neighbors as $neighbor) {
                 // If the neighbor is not visited and is empty, add it to the queue.
@@ -44,37 +44,39 @@ class Ant implements TileInterface
                 }
             }
         }
-
         // If we didn't find a path to the destination, return false.
         return false;
     }
 
-    #[Override] public function getAllValidMoves($from, $game): array
+    #[Override]
+    public function getAllValidMoves($from, $game): array
     {
         $validMoves = [];
-
-        // Use a breadth-first search (BFS) to find all reachable empty fields.
         $visited = [];
-        $queue = [$from];
+        $queue = [[$from, []]];
 
         while (!empty($queue)) {
-            $current = array_shift($queue);
-            $visited[$current] = true;
+            [$current, $path] = array_shift($queue);
 
-            // Get all neighboring positions.
-            $neighbors = Util::getNeighboringOccupiedTiles($current, $game->board);
+            if ($this->isValidMove($from, $current, $game)) {
+                $validMoves[] = $current;
+            }
+
+            $neighbors = Util::getAllNeighboringPositions($current);
 
             foreach ($neighbors as $neighbor) {
-                echo $neighbor;
-                // If the neighbor is not visited and is empty, add it to the queue and to the valid moves.
-                // Also check if the neighbor is not already in the queue.
-                if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor]) && !in_array($neighbor, $queue)) {
-                    $queue[] = $neighbor;
-                    $validMoves[] = $neighbor;
+                if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor])) {
+                    $newPath = $path;
+                    $newPath[] = $neighbor;
+                    if (Util::maintainsConnectivity($from, $neighbor, $newPath, $game)) {
+                        $queue[] = [$neighbor, $newPath];
+                        $visited[$neighbor] = true;
+                    }
                 }
             }
         }
-        return $validMoves;
+
+        return array_unique($validMoves);
     }
 
     #[Override] public function getName(): string

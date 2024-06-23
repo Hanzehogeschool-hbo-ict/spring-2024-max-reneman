@@ -139,4 +139,16 @@ class Util {
         }
         return $neighbors;
     }
+    public static function maintainsConnectivity($from, $to, $path, $game): bool
+    {
+        // The move maintains connectivity if the destination has an occupied neighbor
+        // that is not the starting position and not in the path
+        $neighbors = Util::getNeighboringOccupiedTiles($to, $game->board);
+        foreach ($neighbors as $neighbor) {
+            if ($neighbor !== $from && !in_array($neighbor, $path)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
