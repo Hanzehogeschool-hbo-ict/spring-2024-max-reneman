@@ -2,7 +2,7 @@
 
 namespace tiles;
 
-use Hive\tiles\GrassHopper;
+use Hive\tiles\Grasshopper;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -11,7 +11,7 @@ class GrasshopperTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->grassHopper = new GrassHopper();
+        $this->grassHopper = new Grasshopper();
         $this->game = new stdClass();
         $this->game->board = [];
         $this->game->board['0,0'] = [['white', 'G']];
