@@ -3,7 +3,9 @@
 namespace Hive;
 
 // undo last move
-class UndoController
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties] class UndoController
 {
 
     public function __construct() {

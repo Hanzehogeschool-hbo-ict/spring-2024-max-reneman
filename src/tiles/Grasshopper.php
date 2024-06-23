@@ -51,7 +51,7 @@ class Grasshopper implements TileInterface
                 $hasHopped = true;
             }
             // Check for unoccupied tile and that it has hopped at least once.
-            elseif (!isset($board["$x,$y"]) && $hasHopped) {
+            elseif ($hasHopped) {
                 return ["$x,$y", $allOccupied];
             }
             else {

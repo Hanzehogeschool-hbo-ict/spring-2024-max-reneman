@@ -116,8 +116,8 @@ class Util {
         $current = explode(',', $current);
         $neighbors = [];
         foreach (self::OFFSETS as $offset) {
-            $q = $current[0] + $offset[0];
-            $r = $current[1] + $offset[1];
+            $q = intval($current[0]) + intval($offset[0]);
+            $r = intval($current[1]) + intval($offset[1]);
             $position = "$q,$r";
             // Check if a tile exists at the position
             if (isset($board[$position])) {
@@ -132,8 +132,8 @@ class Util {
         $current = explode(',', $current);
         $neighbors = [];
         foreach (self::OFFSETS as $offset) {
-            $q = $current[0] + $offset[0];
-            $r = $current[1] + $offset[1];
+            $q = intval($current[0]) + intval($offset[0]);
+            $r = intval($current[1]) + intval($offset[1]);
             $position = "$q,$r";
             $neighbors[] = $position;
         }

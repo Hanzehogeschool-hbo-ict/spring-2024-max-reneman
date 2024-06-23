@@ -72,10 +72,11 @@ class IndexController {
         $top = $height * ($qr[1] - $minCoords['r']);
         $content = $tile[$h - 1][1] ?? "";
 
-        return "<div class=\"tile $class\" style=\"left: {$left}px; top: {$top}px;\">{$qr[0]},{$qr[1]}<span>{$content}</span></div>";
+        return "<div class=\"tile $class\" style=\"left: {$left}px; top: {$top}px;\">$qr[0],$qr[1]<span>$content</span></div>";
     }
 
-    private function sortTiles($a, $b) {
+    private function sortTiles($a, $b): int
+    {
         $a = explode(',', $a);
         $b = explode(',', $b);
         return $a[1] == $b[1] ? $a[0] <=> $b[0] : $a[1] <=> $b[1];
@@ -124,7 +125,7 @@ class IndexController {
         $moves = [];
         $result = $this->db->query("SELECT * FROM moves WHERE game_id = {$this->session->getFromSession('game_id')}");
         while ($row = $result->fetch_array()) {
-            $moves[] = "{$row[2]} {$row[3]} {$row[4]}";
+            $moves[] = "$row[2] $row[3] $row[4]";
         }
         return $moves;
     }
