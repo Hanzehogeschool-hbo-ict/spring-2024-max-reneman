@@ -55,4 +55,19 @@ class Game {
             return array_sum($self->hand[0]);
         return "no player selected";
     }
+
+    public function checkIfPlayerLose(int $player): bool
+    {
+        foreach ($this->board as $position => $tileStack) {
+            if (end($tileStack)[0] == $player && end($tileStack)[1] == 'Q') { // If it's a queen of the current player
+                $neighbouringTiles = Util::getNeighboringOccupiedTiles($position, $this->board);
+                if (count($neighbouringTiles) == 6) { // If queen is surrounded by 6 tiles
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
