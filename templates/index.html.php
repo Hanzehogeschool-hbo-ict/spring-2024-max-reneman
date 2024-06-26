@@ -3,6 +3,14 @@
 <head>
     <title>Hive</title>
     <link rel="stylesheet" href="/style.css">
+    <script>
+        window.onload = function(){
+            const isGameOver = <?= json_encode($isGameOver); ?>; // get the value from PHP
+            if (isGameOver) {
+                alert('Game over! Player <?= $game->player == 0 ? "White" : "Black" ?> has lost!');
+            }
+        };
+    </script>
 </head>
 <body>
 <div class="board">

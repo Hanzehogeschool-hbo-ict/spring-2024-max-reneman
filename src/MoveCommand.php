@@ -28,9 +28,12 @@ class MoveCommand implements CommandInterface
             $this->performMove();
         }
 
+        // Log whether the current player has lost the game
+        $hasLost = $this->game->checkIfPlayerLose($this->game->player);
+        error_log('Player ' . ($this->game->player + 1) . ' has ' . ($hasLost ? '' : 'not ') . 'lost');
+
         App::redirect();
     }
-
     private function validateMove(): bool
     {
         $selected_tile = end($this->game->board[$this->from]);

@@ -14,10 +14,7 @@ use AllowDynamicProperties;
     }
     public function handlePost(): void
     {
-        if (!$this->session->getFromSession('game')->hasAnyPlayerPlayedTile()) {
-            App::redirect();
-            return;
-        }
+
 
         // restore last move from database
         $last_move = $this->session->getFromSession('last_move') ?? 0;
