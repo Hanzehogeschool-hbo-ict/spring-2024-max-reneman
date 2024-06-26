@@ -26,3 +26,7 @@ A file `hive.sql` is also provided which contains the database schema.
 This application is licensed under the MIT license, see `LICENSE.md`. Questions
 and comments can be directed to
 [Ralf van den Broek](https://github.com/ralfvandenbroek).
+
+
+docker run -p 8080:8080 spring-2024-max-reneman
+docker-compose up -d 

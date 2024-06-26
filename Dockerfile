@@ -18,6 +18,7 @@ COPY . .
 
 RUN composer dump-autoload --optimize
 
-CMD php -S localhost:8080 -t public/
+CMD php -S 0.0.0.0:8080 -t public/
 
 EXPOSE 8080
+
