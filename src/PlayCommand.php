@@ -37,7 +37,7 @@ private Database $db;
             $this->game->board[$this->to] = [[$this->game->player, $this->piece]];
             $this->game->hand[$this->game->player][$this->piece]--;
             $this->game->player = 1 - $this->game->player;
-            echo "<script> console.log('" . $this->game->__toString() . "'); </script>";
+
 
             $state = $this->db->escape($this->game);
             $last = $this->session->getFromSession('last_move') ?? 'null';
