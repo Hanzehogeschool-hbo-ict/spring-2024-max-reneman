@@ -29,10 +29,6 @@ class IndexController {
             'moveHistory' => $this->getMoveHistory()
         ];
 
-        // Extract $viewData so its elements are accessible as variables in the included file
-        extract($viewData);
-        echo "<script>var viewData = JSON.parse('" . addslashes(json_encode($viewData)) . "');</script>";
-        // Now 'index.html.php' can use variables like $game, $isGameOver, $board etc.
         require_once TEMPLATE_DIR.'/index.html.php';
     }
 

@@ -45,15 +45,12 @@ class Game {
 
 
 
-    public static function currentPlayerTileAmount(String $player): int
+    public static function currentPlayerTileAmount(int $player, Game $game): int
     {
-        $self = new self();
-        if($player==0)
-         return array_sum($self->hand[0]);
-
-        if($player==1)
-            return array_sum($self->hand[0]);
-        return "no player selected";
+        if ($player === 0 || $player === 1) {
+            return array_sum($game->hand[$player]);
+        }
+        throw new \InvalidArgumentException("Invalid player: $player. Must be 0 or 1.");
     }
 
     public function checkIfPlayerLose(int $player): bool

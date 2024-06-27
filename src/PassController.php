@@ -2,6 +2,13 @@
 
 namespace Hive;
 
+use Exception;
+use Hive\tiles\Ant;
+use Hive\tiles\Beetle;
+use Hive\tiles\Grasshopper;
+use Hive\tiles\Queen;
+use Hive\tiles\Spider;
+
 class PassController {
     private Session $session;
     private Database $db;
@@ -11,25 +18,85 @@ class PassController {
         $this->db = new Database();
     }
 
+    /**
+     * @throws Exception
+     */
     public function handlePost(): void
     {
         // get state from session
         $game = $this->session->getFromSession('game');
 
-        // TODO: pass is not implemented yet
+        //check if passing is allowed
+        if (!$this->isPassingAllowed($game)){
+            file_put_contents('debug.log', print_r("passing is NOT allowed", true) . PHP_EOL, FILE_APPEND);
+        }
+
         // switch players
         $game->player = 1 - $game->player;
 
         // store move in database
         $state = $this->db->escape($game);
         $last = $this->session->getFromSession('last_move') ?? 'null';
-        $this->db->query("
-                insert into moves (game_id, type, move_from, move_to, previous_id, state)
-                values ({$this->session->getFromSession('game_id')}, \"pass\", null, null, $last, \"$state\")
-            ");
+        $this->db->execute("
+        insert into moves (game_id, type, move_from, move_to, previous_id, state)
+        values ({$this->session->getFromSession('game_id')}, \"pass\", null, null, $last, \"$state\")
+        ");
         $this->session->setOnSession('last_move', $this->db->getInsertId());
 
         // redirect back to index
         App::redirect();
     }
+
+    private function isPassingAllowed(Game $game): bool
+    {
+        // If the player has tiles left in their hand, they cannot pass.
+        if (Game::currentPlayerTileAmount($game->player, $game) > 0) {
+            //file_put_contents('debug.log', print_r("Hand is not empty", true) . PHP_EOL, FILE_APPEND);
+            //file_put_contents('debug.log', print_r(Game::currentPlayerTileAmount(strval($game->player)), true) . PHP_EOL, FILE_APPEND);
+            return false;
+        }
+
+
+        // If the player has any valid moves they can make with their tiles, they cannot pass.
+        foreach ($game->board as $position => $tileStack) {
+//            file_put_contents('debug.log', print_r($position, true) . PHP_EOL, FILE_APPEND);
+//            file_put_contents('debug.log', print_r($tileStack, true) . PHP_EOL, FILE_APPEND);
+
+
+            $tile = end($tileStack);
+
+            // Check only the current player's tiles.
+            if ($tile[0] == $game->player) {
+
+                $tileType = $tile[1];
+
+                $tileObject = match($tileType) {
+                    'A' => new Ant(),
+                    'B' => new Beetle(),
+                    'G' => new Grasshopper(),
+                    'Q' => new Queen(),
+                    'S' => new Spider(),
+                    default => throw new Exception("Unknown tile type: $tileType"),
+                };
+
+                // Call the getAllValidMoves method of the corresponding tile object.
+                $possibleValidMoves = $tileObject->getAllValidMoves($position, $game);
+                $validMoves = [];
+                foreach ($possibleValidMoves as $possibleValidMove) {
+                    if (Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove[1])) {
+                        file_put_contents('debug.log', print_r("Move would split hive", true) . PHP_EOL, FILE_APPEND);
+                    } else {
+                        $validMoves = $possibleValidMove;
+                    }
+                }
+                file_put_contents('debug.log', print_r("here", true) . PHP_EOL, FILE_APPEND);
+                file_put_contents('debug.log', print_r($validMoves, true) . PHP_EOL, FILE_APPEND);
+                if (!$validMoves == []) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }

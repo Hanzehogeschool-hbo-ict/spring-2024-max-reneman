@@ -51,32 +51,32 @@ class Ant implements TileInterface
     #[Override]
     public function getAllValidMoves($from, $game): array
     {
-        $validMoves = [];
-        $visited = [];
-        $queue = [[$from, []]];
+//        $validMoves = [];
+//        $visited = [];
+//        $queue = [[$from, []]];
+//
+//        while (!empty($queue)) {
+//            [$current, $path] = array_shift($queue);
+//
+//            if ($this->isValidMove($from, $current, $game)) {
+//                $validMoves[] = $current;
+//            }
+//
+//            $neighbors = Util::getAllNeighboringPositions($current);
+//
+//            foreach ($neighbors as $neighbor) {
+//                if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor])) {
+//                    $newPath = $path;
+//                    $newPath[] = $neighbor;
+//                    if (Util::maintainsConnectivity($from, $neighbor, $newPath, $game)) {
+//                        $queue[] = [$neighbor, $newPath];
+//                        $visited[$neighbor] = true;
+//                    }
+//                }
+//            }
+//        }
 
-        while (!empty($queue)) {
-            [$current, $path] = array_shift($queue);
-
-            if ($this->isValidMove($from, $current, $game)) {
-                $validMoves[] = $current;
-            }
-
-            $neighbors = Util::getAllNeighboringPositions($current);
-
-            foreach ($neighbors as $neighbor) {
-                if (!isset($visited[$neighbor]) && !isset($game->board[$neighbor])) {
-                    $newPath = $path;
-                    $newPath[] = $neighbor;
-                    if (Util::maintainsConnectivity($from, $neighbor, $newPath, $game)) {
-                        $queue[] = [$neighbor, $newPath];
-                        $visited[$neighbor] = true;
-                    }
-                }
-            }
-        }
-
-        return array_unique($validMoves);
+        return [];
     }
 
     #[Override] public function getName(): string
