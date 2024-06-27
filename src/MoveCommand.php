@@ -28,10 +28,6 @@ class MoveCommand implements CommandInterface
             $this->performMove();
         }
 
-        // Log whether the current player has lost the game
-        $hasLost = $this->game->checkIfPlayerLose($this->game->player);
-        error_log('Player ' . ($this->game->player + 1) . ' has ' . ($hasLost ? '' : 'not ') . 'lost');
-
         App::redirect();
     }
     private function validateMove(): bool
@@ -71,9 +67,10 @@ class MoveCommand implements CommandInterface
         };
 
         $output = (new tiles\Queen)->getAllValidMoves($this->from, $this->game);
-        var_dump($output);
+        file_put_contents('debug.log', print_r($output, true) . PHP_EOL, FILE_APPEND);
+
         foreach ($output as $move) {
-            var_dump($move);
+            file_put_contents('debug.log', print_r($move, true) . PHP_EOL, FILE_APPEND);
         }
 
         if (!$isValid) {
