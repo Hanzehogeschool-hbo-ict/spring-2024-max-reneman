@@ -58,4 +58,39 @@ class AntTest extends TestCase
 
         $this->assertEquals($expectedMoves, $actualMoves);
     }
+    public function testGetAllValidMovesLargeBoard()
+    {
+        $this->game->board['0,0'] = 'Q';
+        $this->game->board['0,1'] = 'Q';
+        $this->game->board['0,2'] = 'A';
+        $this->game->board['0,3'] = 'A';
+        $this->game->board['0,4'] = 'A';
+        $this->game->board['0,5'] = 'A';
+        $this->game->board['0,6'] = 'A';
+        $this->game->board['0,7'] = 'A';
+        $this->game->board['0,8'] = 'A';
+        $this->game->board['0,9'] = 'A';
+        $this->game->board['0,10'] = 'A';
+        $this->game->board['0,11'] = 'A';
+        $this->game->board['0,12'] = 'A';
+        $this->game->board['0,-1'] = 'A';
+        $this->game->board['0,-2'] = 'A';
+        $this->game->board['0,-3'] = 'A';
+        $this->game->board['0,-4'] = 'A';
+        $this->game->board['0,-5'] = 'A';
+        $this->game->board['0,-6'] = 'A';
+        $this->game->board['0,-7'] = 'A';
+        $this->game->board['0,-8'] = 'A';
+        $this->game->board['0,-9'] = 'A';
+
+        $expectedMoves = [
+            '1,1', '1,0', '0,2', '-1,2', '-1,1'
+        ];
+        $actualMoves = $this->ant->getAllValidMoves('0,12', $this->game);
+
+        sort($expectedMoves);
+        sort($actualMoves);
+
+        $this->assertEquals($expectedMoves, $actualMoves);
+    }
 }

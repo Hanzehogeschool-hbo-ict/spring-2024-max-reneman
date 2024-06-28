@@ -47,6 +47,9 @@ class PassController {
         App::redirect();
     }
 
+    /**
+     * @throws Exception
+     */
     private function isPassingAllowed(Game $game): bool
     {
         // If the player has tiles left in their hand, they cannot pass.
@@ -89,7 +92,7 @@ class PassController {
                         $validMoves = $possibleValidMove;
                     }
                 }
-                file_put_contents('debug.log', print_r("here", true) . PHP_EOL, FILE_APPEND);
+                file_put_contents('debug.log', print_r("print all valid moves:", true) . PHP_EOL, FILE_APPEND);
                 file_put_contents('debug.log', print_r($validMoves, true) . PHP_EOL, FILE_APPEND);
                 if (!$validMoves == []) {
                     return false;
