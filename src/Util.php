@@ -101,7 +101,7 @@ class Util {
         }
 
         // Get the stacks at the four positions
-        $fromStack = $board[$from] ?? [];
+        $fromStack = $board[$from];
         $toStack = $board[$to] ?? [];
         $aStack = $board[$common[0]] ?? [];
         $bStack = $board[$common[1]] ?? [];

@@ -19,6 +19,7 @@ class IndexController {
         }
 
         $isGameOver = $game->checkIfPlayerLose($game->player);
+        //array keys are used in index.html.php
         $viewData = [
             'game' => $game,
             'isGameOver' => $isGameOver,

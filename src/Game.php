@@ -4,6 +4,8 @@ namespace Hive;
 
 // game state
 
+use InvalidArgumentException;
+
 class Game {
     // current board state
     // this is an associative array mapping board positions to stacks of tiles
@@ -50,7 +52,7 @@ class Game {
         if ($player === 0 || $player === 1) {
             return array_sum($game->hand[$player]);
         }
-        throw new \InvalidArgumentException("Invalid player: $player. Must be 0 or 1.");
+        throw new InvalidArgumentException("Invalid player: $player. Must be 0 or 1.");
     }
 
     public function checkIfPlayerLose(int $player): bool
