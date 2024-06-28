@@ -4,16 +4,17 @@ namespace tiles;
 
 use Hive\tiles\Ant;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class AntTest extends TestCase
 {
     protected Ant $ant;
-    protected \stdClass $game;
+    protected stdClass $game;
 
     protected function setUp(): void
     {
         $this->ant = new Ant();
-        $this->game = new \stdClass();
+        $this->game = new stdClass();
         $this->game->board = [];
     }
 

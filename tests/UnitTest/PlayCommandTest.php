@@ -6,6 +6,7 @@ use Hive\PlayCommand;
 use Hive\Session;
 use Hive\Game;
 use Hive\Database;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class PlayCommandTest extends TestCase
@@ -13,6 +14,9 @@ class PlayCommandTest extends TestCase
     private Session $session;
     private Database $db;
 
+    /**
+     * @throws Exception
+     */
     protected function setUp(): void {
         $this->session = new Session();
         $this->db = $this->createMock(Database::class);
@@ -23,7 +27,7 @@ class PlayCommandTest extends TestCase
         // Arrange
         $game = new Game();
         $game->player = 0; // White player
-        $game->hand[$game->player] = ['Q' => 1, 'B' => 3]; // Hand with 1 queen bee and 3 other pieces
+        $game->hand[$game->player] = ['Q' => 1, 'B' => 3];
         $this->session->setOnSession('game', $game);
 
         // Act
