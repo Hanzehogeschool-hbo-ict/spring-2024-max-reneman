@@ -53,7 +53,7 @@ class PassController {
     }
 
 
-    private function isPassingAllowed(Game $game): bool
+    public static function isPassingAllowed(Game $game): bool
     {
         // If the player has tiles left in their hand, they cannot pass.
         if (Game::currentPlayerTileAmount($game->player, $game) > 0) {
@@ -87,7 +87,9 @@ class PassController {
                 $possibleValidMoves = $tileObject->getAllValidMoves($position, $game);
                 $validMoves = [];
                 foreach ($possibleValidMoves as $possibleValidMove) {
+                    file_put_contents('debug.log', print_r($possibleValidMove, true) . PHP_EOL, FILE_APPEND);
                     if (Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove)) {
+                        file_put_contents('debug.log', print_r($possibleValidMove . "invalid split causer", true) . PHP_EOL, FILE_APPEND);
                     } else {
                         $validMoves = $possibleValidMove;
                     }
