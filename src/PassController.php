@@ -27,43 +27,44 @@ class PassController {
         $game = $this->session->getFromSession('game');
 
         //check if passing is allowed
-        if (!$this->isPassingAllowed($game)){
-            file_put_contents('debug.log', print_r("passing is NOT allowed", true) . PHP_EOL, FILE_APPEND);
-        }
+        if ($this->isPassingAllowed($game)) {
+            file_put_contents('debug.log', print_r("passing is allowed", true) . PHP_EOL, FILE_APPEND);
 
-        // switch players
-        $game->player = 1 - $game->player;
 
-        // store move in database
-        $state = $this->db->escape($game);
-        $last = $this->session->getFromSession('last_move') ?? 'null';
-        $this->db->execute("
+            // switch players
+            $game->player = 1 - $game->player;
+
+            // store move in database
+            $state = $this->db->escape($game);
+            $last = $this->session->getFromSession('last_move') ?? 'null';
+            $this->db->execute("
         insert into moves (game_id, type, move_from, move_to, previous_id, state)
         values ({$this->session->getFromSession('game_id')}, \"pass\", null, null, $last, \"$state\")
         ");
-        $this->session->setOnSession('last_move', $this->db->getInsertId());
+            $this->session->setOnSession('last_move', $this->db->getInsertId());
 
-        // redirect back to index
+            // redirect back to index
+            App::redirect();
+        }
+
+    else{
         App::redirect();
     }
+    }
 
-    /**
-     * @throws Exception
-     */
+
     private function isPassingAllowed(Game $game): bool
     {
         // If the player has tiles left in their hand, they cannot pass.
         if (Game::currentPlayerTileAmount($game->player, $game) > 0) {
-            //file_put_contents('debug.log', print_r("Hand is not empty", true) . PHP_EOL, FILE_APPEND);
-            //file_put_contents('debug.log', print_r(Game::currentPlayerTileAmount(strval($game->player)), true) . PHP_EOL, FILE_APPEND);
+
             return false;
         }
 
 
         // If the player has any valid moves they can make with their tiles, they cannot pass.
         foreach ($game->board as $position => $tileStack) {
-//            file_put_contents('debug.log', print_r($position, true) . PHP_EOL, FILE_APPEND);
-//            file_put_contents('debug.log', print_r($tileStack, true) . PHP_EOL, FILE_APPEND);
+
 
 
             $tile = end($tileStack);
@@ -86,8 +87,7 @@ class PassController {
                 $possibleValidMoves = $tileObject->getAllValidMoves($position, $game);
                 $validMoves = [];
                 foreach ($possibleValidMoves as $possibleValidMove) {
-                    if (Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove[1])) {
-                        file_put_contents('debug.log', print_r("Move would split hive", true) . PHP_EOL, FILE_APPEND);
+                    if (Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove)) {
                     } else {
                         $validMoves = $possibleValidMove;
                     }
