@@ -4,16 +4,17 @@ namespace tiles;
 
 use Hive\tiles\Ant;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class AntTest extends TestCase
 {
     protected Ant $ant;
-    protected \stdClass $game;
+    protected stdClass $game;
 
     protected function setUp(): void
     {
         $this->ant = new Ant();
-        $this->game = new \stdClass();
+        $this->game = new stdClass();
         $this->game->board = [];
     }
 
@@ -84,7 +85,15 @@ class AntTest extends TestCase
         $this->game->board['0,-9'] = 'A';
 
         $expectedMoves = [
-            '1,1', '1,0', '0,2', '-1,2', '-1,1'
+            '-1,-1', '-1,-2', '-1,-3', '-1,-4', '-1,-5',
+            '-1,-6', '-1,-7', '-1,-8', '-1,-9', '-1,0',
+            '-1,1', '-1,10', '-1,11', '-1,12', '-1,2',
+            '-1,3', '-1,4', '-1,5', '-1,6', '-1,7',
+            '-1,8', '-1,9', '0,-10', '1,-1', '1,-10',
+            '1,-2', '1,-3', '1,-4', '1,-5', '1,-6',
+            '1,-7', '1,-8', '1,-9', '1,0', '1,1',
+            '1,10', '1,11', '1,2', '1,3', '1,4',
+            '1,5', '1,6', '1,7', '1,8', '1,9'
         ];
         $actualMoves = $this->ant->getAllValidMoves('0,12', $this->game);
 

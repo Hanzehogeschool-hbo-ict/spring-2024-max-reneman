@@ -1,13 +1,14 @@
 <?php
+
 namespace Hive;
 
 class IndexController {
     private Session $session;
     private Database $db;
 
-    public function __construct() {
-        $this->session = new Session();
-        $this->db = new Database();
+    public function __construct(Database $db = null, Session $session = null) {
+        $this->db = $db ?? new Database();
+        $this->session = $session ?? new Session();
     }
 
     public function handleGet(): void {
@@ -18,6 +19,7 @@ class IndexController {
         }
 
         $isGameOver = $game->checkIfPlayerLose($game->player);
+        //array keys are used in index.html.php
         $viewData = [
             'game' => $game,
             'isGameOver' => $isGameOver,
@@ -96,7 +98,7 @@ class IndexController {
             return count($to) ? $to : ['0,0'];
         }
 
-        public function getPieces($game): array {
+    public function getPieces($game): array {
         $return = [];
         foreach ($game->hand[$game->player] as $tile => $ct) {
             if($ct !== 0) $return[] = "<option value=\"$tile\">$tile</option>";

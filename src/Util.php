@@ -78,12 +78,20 @@ class Util {
     // which are used by all tiles except the grasshopper
     public static function slide(array $board, string $from, string $to): bool
     {
-        // a slide is only valid if from and to are neighbours and to connects to the remainder of the hive
-        if (!self::hasNeighBour($to, $board)) return false;
+        // Check if the 'from' position exists in the board
+        if (!isset($board[$from])) return false;
+
+        // Check if 'from' and 'to' are neighbours
         if (!self::isNeighbour($from, $to)) return false;
 
-        // find the two common neighbours of the origin and target tiles
-        // there are always two, because the two tiles are neighbours
+        // Remove the 'from' position temporarily to check connectivity
+        $tempBoard = $board;
+        unset($tempBoard[$from]);
+
+        // Check if the 'to' position would be connected to the hive
+        if (!self::hasNeighBour($to, $tempBoard)) return false;
+
+        // Find the two common neighbours of the origin and target tiles
         $b = explode(',', $to);
         $common = [];
         foreach (self::OFFSETS as $qr) {
@@ -92,39 +100,17 @@ class Util {
             if (self::isNeighbour($from, $q.",".$r)) $common[] = $q.",".$r;
         }
 
-        // find the stacks at the four positions
-        $from = $board[$from] ?? [];
-        $to = $board[$to] ?? [];
-        $a = $board[$common[0]] ?? [];
-        $b = $board[$common[1]] ?? [];
+        // Get the stacks at the four positions
+        $fromStack = $board[$from];
+        $toStack = $board[$to] ?? [];
+        $aStack = $board[$common[0]] ?? [];
+        $bStack = $board[$common[1]] ?? [];
 
-        // if none of these four stacks contain tiles, the tile would be disconnected from
-        // the hive during the move and the slide would therefore be invalid
-        // but if at least one of them contains tiles, the move should be valid
-//        if (!$a || !$b || !$from || !$to) return false;
+        // Check if at least one of the common neighbours is occupied
+        if (empty($aStack) && empty($bStack)) return false;
 
-        // the rules are unclear on when exactly a slide is valid, especially when considering stacked tiles
-        // the following equation attempts to clarify which slides are valid
-        // essentially, a slide is valid if the highest of the stacks at origin and target are at least as
-        // high as the lowest stack at the two common neighbours, because that would allow the moving tile
-        // to physically slide to the target location without having to squeeze between two tiles
-        return min(count($a), count($b)) <= max(count($from), count($to));
-    }
-
-    public static function getNeighboringOccupiedTiles(mixed $current, array $board): array
-    {
-        $current = explode(',', $current);
-        $neighbors = [];
-        foreach (self::OFFSETS as $offset) {
-            $q = intval($current[0]) + intval($offset[0]);
-            $r = intval($current[1]) + intval($offset[1]);
-            $position = "$q,$r";
-            // Check if a tile exists at the position
-            if (isset($board[$position])) {
-                $neighbors[] = $position;
-            }
-        }
-        return $neighbors;
+        // Check if the slide is physically possible
+        return min(count($aStack), count($bStack)) <= max(count($fromStack), count($toStack));
     }
 
     public static function getAllNeighboringPositions(mixed $current): array
@@ -150,5 +136,21 @@ class Util {
             }
         }
         return false;
+    }
+
+    public static function getNeighboringOccupiedTiles(mixed $current, array $board): array
+    {
+        $current = explode(',', $current);
+        $neighbors = [];
+        foreach (self::OFFSETS as $offset) {
+            $q = intval($current[0]) + intval($offset[0]);
+            $r = intval($current[1]) + intval($offset[1]);
+            $position = "$q,$r";
+            // Check if a tile exists at the position
+            if (isset($board[$position])) {
+                $neighbors[] = $position;
+            }
+        }
+        return $neighbors;
     }
 }

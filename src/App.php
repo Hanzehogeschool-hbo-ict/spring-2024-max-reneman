@@ -2,7 +2,12 @@
 
 namespace Hive;
 
+use Exception;
+
 class App {
+    /**
+     * @throws Exception
+     */
     public function handle(): void {
         // get current route
         $path = explode('/', $_SERVER['PATH_INFO'] ?? '');
