@@ -14,19 +14,24 @@ which can be started using the following command.
 ```
 php -S localhost:8000 -t public/
 ```
+############################################################
 
-In addition to PHP 8.3 or higher, the code requires the mysqli extension and a MySQL
-or compatible server. The connection parameters are set using environment variables;
-these can be configured using a `.env` file in the project root directory. An example
-`.env.example` file is provided which assumes the database is running on localhost, has
-a root user using the password `password` and a database schema named `hive`. This
-file can be renamed to `.env` and modified to match the desired connection parameters.
-A file `hive.sql` is also provided which contains the database schema.
+Om PHP unit te starten:
+```
+./vendor/bin/phpunit
+```
+
+om de docker containers te starten:
+```
+docker-compose up -d
+```
+De undo werkt maar de eerste keer moet je twee keer op de knop drukken. 
+
+De AI is wel werkend voor wit maar je moet nog wel eerst een zet doen voor wit om hem op gang te helpen.
+Dus eerst een willekeurige zet op wit, dan 1 op zwart (die jij daarna speelt). Hierna kan je met AI move de zetten van wit genereren.
+
+############################################################
 
 This application is licensed under the MIT license, see `LICENSE.md`. Questions
 and comments can be directed to
 [Ralf van den Broek](https://github.com/ralfvandenbroek).
-
-
-docker run -p 8080:8080 spring-2024-max-reneman
-docker-compose up -d 

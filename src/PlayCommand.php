@@ -36,6 +36,7 @@ private Database $db;
         } else {
             $this->game->board[$this->to] = [[$this->game->player, $this->piece]];
             $this->game->hand[$this->game->player][$this->piece]--;
+            $this->game->moveNumber++;
             $this->game->player = 1 - $this->game->player;
 
 

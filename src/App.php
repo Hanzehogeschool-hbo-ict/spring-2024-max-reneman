@@ -21,6 +21,7 @@ class App {
             'play' => new PlayController(),
             'restart' => new RestartController(),
             'undo' => new UndoController(),
+            'ai' => new AIController(),
         };
 
         // dispatch get or post request

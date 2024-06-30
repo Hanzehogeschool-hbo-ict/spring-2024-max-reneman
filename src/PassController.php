@@ -86,7 +86,6 @@ class PassController {
                 $possibleValidMoves = $tileObject->getAllValidMoves($position, $game);
                 $validMoves = [];
                 foreach ($possibleValidMoves as $possibleValidMove) {
-                    file_put_contents('debug.log', print_r($possibleValidMove, true) . PHP_EOL, FILE_APPEND);
                     if (!Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove)) {
                         $validMoves = $possibleValidMove;
                     }

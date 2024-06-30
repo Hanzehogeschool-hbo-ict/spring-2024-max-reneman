@@ -130,6 +130,7 @@ class MoveCommand implements CommandInterface
         } else {
             $this->game->board[$this->to] = [$tile];
         }
+        $this->game->moveNumber++;
 
         $this->game->player = 1 - $this->game->player;
         $state = $this->db->escape($this->game);

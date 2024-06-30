@@ -31,6 +31,7 @@ class Game {
     ];
     // current player; 0 for white, 1 for black
     public int $player = 0;
+    public int $moveNumber = 0;
 
     // store the current state as a string
     public function __toString(): string {

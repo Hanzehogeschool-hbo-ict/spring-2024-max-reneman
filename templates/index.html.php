@@ -75,6 +75,9 @@
 <form method="get" action="/restart">
     <input type="submit" value="Restart">
 </form>
+<form method="post" action="/ai">
+    <input type="submit" value="White AI Move">
+</form>
 <?php if ($viewData['errorMessage']): ?>
     <strong><?= $viewData['errorMessage'] ?></strong>
 <?php endif; ?>
