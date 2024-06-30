@@ -23,7 +23,7 @@ php:
 include:
   - name: PhpMethodNamingConventionInspection
   - name: PhpVulnerablePathsInspection
-  - name: CheckCoverage
+  - name: PhpCoverageInspection
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
