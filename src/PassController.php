@@ -28,7 +28,7 @@ class PassController {
 
         //check if passing is allowed
         if ($this->isPassingAllowed($game)) {
-            file_put_contents('debug.log', print_r("passing is allowed", true) . PHP_EOL, FILE_APPEND);
+
 
 
             // switch players
@@ -57,7 +57,6 @@ class PassController {
     {
         // If the player has tiles left in their hand, they cannot pass.
         if (Game::currentPlayerTileAmount($game->player, $game) > 0) {
-
             return false;
         }
 
@@ -88,14 +87,11 @@ class PassController {
                 $validMoves = [];
                 foreach ($possibleValidMoves as $possibleValidMove) {
                     file_put_contents('debug.log', print_r($possibleValidMove, true) . PHP_EOL, FILE_APPEND);
-                    if (Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove)) {
-                        file_put_contents('debug.log', print_r($possibleValidMove . "invalid split causer", true) . PHP_EOL, FILE_APPEND);
-                    } else {
+                    if (!Util::hasMultipleHivesNewBoard($game->board, $position , $possibleValidMove)) {
                         $validMoves = $possibleValidMove;
                     }
                 }
-                file_put_contents('debug.log', print_r("print all valid moves:", true) . PHP_EOL, FILE_APPEND);
-                file_put_contents('debug.log', print_r($validMoves, true) . PHP_EOL, FILE_APPEND);
+
                 if (!$validMoves == []) {
                     return false;
                 }
