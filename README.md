@@ -15,6 +15,8 @@ which can be started using the following command.
 php -S localhost:8000 -t public/
 ```
 ############################################################
+# Dave Pleijendal 383101
+# Max  Reneman 357531
 
 Om PHP unit te starten:
 ```
