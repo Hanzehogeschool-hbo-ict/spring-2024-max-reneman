@@ -44,8 +44,8 @@ class PassControllerTest extends TestCase
         $this->game->board["0,12"] = [[$player, 'G']];
         $this->game->board["0,13"] = [[$player, 'G']];
         file_put_contents('debug.log', print_r($this->game->board, true) . PHP_EOL, FILE_APPEND);
-        $this->game->hand[0] = [];
-        $this->game->hand[1] = []; 
+        $this->game->hand[0] = [];// Empty hand for white player
+        $this->game->hand[1] = []; // Empty hand for black player
 
         //$this->session->setOnSession('game', $game);
 
