@@ -18,6 +18,8 @@ php -S localhost:8000 -t public/
 # Dave Pleijendal 383101
 # Max  Reneman 357531
 
+# https://github.com/Hanzehogeschool-hbo-ict/spring-2024-max-reneman
+
 Om PHP unit te starten:
 ```
 ./vendor/bin/phpunit
