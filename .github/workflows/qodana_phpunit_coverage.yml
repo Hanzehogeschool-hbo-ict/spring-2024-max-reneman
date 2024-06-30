@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-and-qodana:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -31,20 +31,10 @@ jobs:
       - name: Run tests with PHPUnit and generate coverage
         run: ./vendor/bin/phpunit --coverage-clover coverage.xml
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-
-  qodana:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2023.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
           args: --baseline,qodana.sarif.json
+          coverage-reports: coverage.xml

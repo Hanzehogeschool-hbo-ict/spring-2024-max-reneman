@@ -31,5 +31,5 @@ services:
 
   AI:
     build:
-      context: https://github.com/2themax2/itvb23ows-hive-ai
+      context: https://github.com/2themax2/itvb23ows-hive-ai.git
       dockerfile: Dockerfile
